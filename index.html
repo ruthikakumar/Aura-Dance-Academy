@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Aura Dance Academy</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f3ff;
+            font-family: Arial, sans-serif;
+        }
+
+        .login-selection {
+            width: 90%;
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .academy-logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            background: #6c4ce8;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .login-selection h1 {
+            margin-bottom: 8px;
+            color: #222;
+        }
+
+        .login-selection > p {
+            margin-bottom: 35px;
+            color: #666;
+        }
+
+        .login-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .login-card {
+            background: white;
+            padding: 35px 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .login-card .icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .login-card h2 {
+            margin: 10px 0;
+            color: #222;
+        }
+
+        .login-card p {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .login-button {
+            display: inline-block;
+            padding: 12px 28px;
+            background: #6c4ce8;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .login-button:hover {
+            background: #5738c7;
+        }
+
+        @media (max-width: 650px) {
+            .login-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-selection">
+
+        <div class="academy-logo">
+            A
+        </div>
+
+        <h1>Aura Dance Academy</h1>
+
+        <p>Dance Academy Management System</p>
+
+        <div class="login-options">
+
+            <!-- ADMIN -->
+
+            <div class="login-card">
+
+                <div class="icon">
+                    👨‍💼
+                </div>
+
+                <h2>Admin</h2>
+
+                <p>
+                    Manage students, batches, fees, instructors,
+                    attendance and announcements.
+                </p>
+
+                <a
+                    href="admin-login.html"
+                    class="login-button"
+                >
+                    Admin Login
+                </a>
+
+            </div>
+
+
+            <!-- STUDENT -->
+
+            <div class="login-card">
+
+                <div class="icon">
+                    🧑‍🎓
+                </div>
+
+                <h2>Student</h2>
+
+                <p>
+                    View your profile, schedule, attendance,
+                    payments and academy announcements.
+                </p>
+
+                <a
+                    href="user-login.html"
+                    class="login-button"
+                >
+                    Student Login
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Attendance | Aura Dance Academy</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="auth.js"></script>
+</head>
+
+<body>
+
+<script>
+    requireRole("STUDENT", "user-login.html");
+</script>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="academy-icon">
+                💃
+            </div>
+
+            <div>
+                <h2>Aura Dance</h2>
+                <span>Academy</span>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="student-dashboard.html" class="nav-item">
+                <span>📊</span>
+                Dashboard
+            </a>
+
+            <a href="my-profile.html" class="nav-item">
+                <span>👤</span>
+                My Profile
+            </a>
+
+            <a href="my-schedule.html" class="nav-item">
+                <span>🕐</span>
+                My Schedule
+            </a>
+
+            <a href="my-attendance.html" class="nav-item active">
+                <span>📋</span>
+                My Attendance
+            </a>
+
+            <a href="my-payments.html" class="nav-item">
+                <span>💰</span>
+                My Payments
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <button
+    type="button"
+    class="logout-button"
+    onclick="logout(); window.location.href='user-login.html';"
+>
+    <span>🚪</span>
+    Logout
+</button>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <h1>
+                    My Attendance
+                </h1>
+
+                <p>
+                    View your attendance information.
+                </p>
+
+            </div>
+
+
+            <div class="admin-profile">
+
+                <div
+                    class="profile-icon"
+                    id="profileIcon"
+                >
+                    S
+                </div>
+
+                <div>
+
+                    <strong id="studentName">
+                        Student
+                    </strong>
+
+                    <span>
+                        Student
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ATTENDANCE SUMMARY -->
+        <section class="attendance-summary">
+
+            <div class="attendance-card">
+
+                <div class="attendance-icon">
+                    📊
+                </div>
+
+                <div>
+
+                    <strong id="attendancePercentage">
+                        0%
+                    </strong>
+
+                    <span>
+                        Overall Attendance
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="attendance-card">
+
+                <div class="attendance-icon">
+                    💃
+                </div>
+
+                <div>
+
+                    <strong id="danceType">
+                        -
+                    </strong>
+
+                    <span>
+                        Dance Type
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="attendance-card">
+
+                <div class="attendance-icon">
+                    📚
+                </div>
+
+                <div>
+
+                    <strong id="level">
+                        -
+                    </strong>
+
+                    <span>
+                        Level
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="attendance-card">
+
+                <div class="attendance-icon">
+                    🕐
+                </div>
+
+                <div>
+
+                    <strong id="batch">
+                        -
+                    </strong>
+
+                    <span>
+                        Batch
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ATTENDANCE DETAILS -->
+        <section class="dashboard-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Attendance Overview
+                    </h2>
+
+                    <p>
+                        Your current attendance percentage.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+<!-- CLASS ATTENDANCE -->
+
+<div class="dashboard-section">
+
+    <div class="section-header">
+        <div>
+            <h2>Today's Class Attendance</h2>
+            <p>Clock in when you enter the class and clock out when you leave.</p>
+        </div>
+    </div>
+
+    <div class="clock-attendance-card">
+
+        <div class="class-info">
+            <span>Today's Class</span>
+            <strong id="studentBatchName">-</strong>
+        </div>
+
+        <div class="clock-info">
+
+            <div>
+                <span>Clock In</span>
+                <strong id="clockInTime">--:--</strong>
+            </div>
+
+            <div>
+                <span>Clock Out</span>
+                <strong id="clockOutTime">--:--</strong>
+            </div>
+
+            <div>
+                <span>Status</span>
+                <strong id="clockStatus">NOT MARKED</strong>
+            </div>
+
+        </div>
+
+        <div class="clock-actions">
+
+            <button
+                type="button"
+                id="clockInButton"
+                class="primary-button"
+                onclick="clockIn()"
+            >
+                🟢 Clock In
+            </button>
+
+            <button
+                type="button"
+                id="clockOutButton"
+                class="secondary-button"
+                onclick="clockOut()"
+                disabled
+            >
+                🔴 Clock Out
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+            <div class="attendance-progress-section">
+
+                <div class="progress-header">
+
+                    <strong>
+                        Attendance
+                    </strong>
+
+                    <strong id="progressValue">
+                        0%
+                    </strong>
+
+                </div>
+
+
+                <div class="progress-bar">
+
+                    <div
+                        class="progress-fill"
+                        id="progressFill"
+                    ></div>
+
+                </div>
+
+
+                <p
+                    id="attendanceMessage"
+                    class="attendance-message"
+                >
+                    Loading attendance...
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- ATTENDANCE INFORMATION -->
+        <section class="dashboard-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Attendance Information
+                    </h2>
+
+                    <p>
+                        Keep your attendance regular to maintain your progress.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="info-box">
+
+                <div>
+                    <strong>Student</strong>
+                    <span id="infoName">-</span>
+                </div>
+
+                <div>
+                    <strong>Instructor</strong>
+                    <span id="instructor">-</span>
+                </div>
+
+                <div>
+                    <strong>Batch</strong>
+                    <span id="infoBatch">-</span>
+                </div>
+
+                <div>
+                    <strong>Current Attendance</strong>
+                    <span id="infoAttendance">-</span>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<button
+    class="logout-button"
+    onclick="logoutUser()"
+>
+    <span>🚪</span>
+    Logout
+</button>
+
+
+
+
+<script>
+
+const STUDENT_KEY = "aura_students";
+
+
+function getCurrentStudent() {
+
+    const currentUser =
+        JSON.parse(
+            localStorage.getItem(
+                "danceAcademy_currentUser"
+            )
+        );
+
+
+    if (!currentUser) {
+        return null;
+    }
+
+
+    const students =
+        JSON.parse(
+            localStorage.getItem(
+                STUDENT_KEY
+            ) || "[]"
+        );
+
+
+    let student =
+        students.find(
+            item =>
+                item.id === currentUser.studentId
+        );
+
+
+    /*
+        Demo student login fallback.
+    */
+
+    if (
+        !student &&
+        currentUser.username === "student"
+    ) {
+
+        student =
+            students.find(
+                item =>
+                    item.id === "STU001"
+            );
+
+    }
+
+
+    return student || null;
+
+}
+
+
+function loadAttendance() {
+
+    const student =
+        getCurrentStudent();
+
+
+    if (!student) {
+
+        showNoStudent();
+
+        return;
+
+    }
+
+
+    const name =
+        student.name || "Student";
+
+
+    const attendance =
+        Number(
+            student.attendance || 0
+        );
+
+
+    document.getElementById(
+        "studentName"
+    ).textContent =
+        name;
+
+
+    document.getElementById(
+        "profileIcon"
+    ).textContent =
+        name
+            .charAt(0)
+            .toUpperCase();
+
+
+    document.getElementById(
+        "attendancePercentage"
+    ).textContent =
+        attendance + "%";
+
+
+    document.getElementById(
+        "progressValue"
+    ).textContent =
+        attendance + "%";
+
+
+    document.getElementById(
+        "danceType"
+    ).textContent =
+        student.dance || "-";
+
+
+    document.getElementById(
+        "level"
+    ).textContent =
+        student.level || "-";
+
+
+    document.getElementById(
+        "batch"
+    ).textContent =
+        student.batch || "-";
+
+
+    document.getElementById(
+        "infoName"
+    ).textContent =
+        name;
+
+
+    document.getElementById(
+        "instructor"
+    ).textContent =
+        student.instructor || "-";
+
+
+    document.getElementById(
+        "infoBatch"
+    ).textContent =
+        student.batch || "-";
+
+
+    document.getElementById(
+        "infoAttendance"
+    ).textContent =
+        attendance + "%";
+
+
+    const progressFill =
+        document.getElementById(
+            "progressFill"
+        );
+
+
+    progressFill.style.width =
+        Math.min(
+            Math.max(attendance, 0),
+            100
+        ) + "%";
+
+
+    const message =
+        document.getElementById(
+            "attendanceMessage"
+        );
+
+
+    if (attendance >= 90) {
+
+        message.textContent =
+            "Your attendance is currently above 90%.";
+
+    } else if (attendance >= 75) {
+
+        message.textContent =
+            "Your attendance is currently at a good level.";
+
+    } else {
+
+        message.textContent =
+            "Please attend classes regularly to improve your attendance.";
+
+    }
+
+}
+
+
+function showNoStudent() {
+
+    document.getElementById(
+        "attendanceMessage"
+    ).textContent =
+        "Student information could not be found.";
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadAttendance
+);
+
+/* ==================================================
+   STUDENT CLOCK IN / CLOCK OUT
+================================================== */
+
+const STUDENT_ATTENDANCE_KEY = "aura_attendance";
+const STUDENT_STORAGE_KEY = "aura_students";
+const STUDENT_BATCH_KEY = "aura_batches";
+
+
+function getTodayDate() {
+
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+}
+
+
+function getCurrentStudent() {
+
+    const currentUser = getCurrentUser();
+
+    if (!currentUser) {
+        return null;
+    }
+
+    const students =
+        JSON.parse(
+            localStorage.getItem(STUDENT_STORAGE_KEY)
+        ) || [];
+
+    return students.find(function(student) {
+
+        return (
+            student.id === currentUser.studentId ||
+            student.email === currentUser.email ||
+            (
+                currentUser.username === "student" &&
+                student.id === "STU001"
+            )
+        );
+
+    }) || null;
+}
+
+
+function getStudentAttendanceRecords() {
+
+    return JSON.parse(
+        localStorage.getItem(STUDENT_ATTENDANCE_KEY)
+    ) || [];
+
+}
+
+
+function saveStudentAttendanceRecords(records) {
+
+    localStorage.setItem(
+        STUDENT_ATTENDANCE_KEY,
+        JSON.stringify(records)
+    );
+
+}
+
+
+function getStudentBatch(student) {
+
+    if (!student || !student.batch) {
+        return null;
+    }
+
+    const batches =
+        JSON.parse(
+            localStorage.getItem(STUDENT_BATCH_KEY)
+        ) || [];
+
+    return batches.find(function(batch) {
+
+        return batch.id === student.batch;
+
+    }) || null;
+
+}
+
+
+function formatClockTime(date) {
+
+    return date.toLocaleTimeString(
+        [],
+        {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
+        }
+    );
+
+}
+
+
+/* ==================================================
+   UPDATE CLOCK UI
+================================================== */
+
+function updateClockUI() {
+
+    const student = getCurrentStudent();
+
+    if (!student) {
+        return;
+    }
+
+    const batch = getStudentBatch(student);
+
+    const today = getTodayDate();
+
+    const records =
+        getStudentAttendanceRecords();
+
+    const record =
+        records.find(function(item) {
+
+            return (
+                item.date === today &&
+                item.batchId === student.batch
+            );
+
+        });
+
+    const studentAttendance =
+        record &&
+        record.students
+            ? record.students.find(function(item) {
+
+                return item.studentId === student.id;
+
+            })
+            : null;
+
+
+    /* Today's class */
+
+    const batchNameElement =
+        document.getElementById(
+            "studentBatchName"
+        );
+
+    if (batchNameElement) {
+
+        batchNameElement.textContent =
+            batch
+                ? batch.name
+                : student.batch || "-";
+
+    }
+
+
+    const clockInElement =
+        document.getElementById(
+            "clockInTime"
+        );
+
+    const clockOutElement =
+        document.getElementById(
+            "clockOutTime"
+        );
+
+    const statusElement =
+        document.getElementById(
+            "clockStatus"
+        );
+
+    const clockInButton =
+        document.getElementById(
+            "clockInButton"
+        );
+
+    const clockOutButton =
+        document.getElementById(
+            "clockOutButton"
+        );
+
+
+    if (!studentAttendance) {
+
+        if (clockInElement) {
+            clockInElement.textContent = "--:--";
+        }
+
+        if (clockOutElement) {
+            clockOutElement.textContent = "--:--";
+        }
+
+        if (statusElement) {
+            statusElement.textContent =
+                "NOT MARKED";
+        }
+
+        if (clockInButton) {
+            clockInButton.disabled = false;
+        }
+
+        if (clockOutButton) {
+            clockOutButton.disabled = true;
+        }
+
+        return;
+    }
+
+
+    /* Clock In */
+
+    if (clockInElement) {
+
+        clockInElement.textContent =
+            studentAttendance.clockIn
+                ? formatClockTime(
+                    new Date(
+                        studentAttendance.clockIn
+                    )
+                )
+                : "--:--";
+
+    }
+
+
+    /* Clock Out */
+
+    if (clockOutElement) {
+
+        clockOutElement.textContent =
+            studentAttendance.clockOut
+                ? formatClockTime(
+                    new Date(
+                        studentAttendance.clockOut
+                    )
+                )
+                : "--:--";
+
+    }
+
+
+    /* Status */
+
+    if (statusElement) {
+
+        if (
+            studentAttendance.status ===
+            "PRESENT"
+        ) {
+
+            statusElement.textContent =
+                "PRESENT";
+
+        } else {
+
+            statusElement.textContent =
+                "IN CLASS";
+
+        }
+
+    }
+
+
+    /* Buttons */
+
+    if (clockInButton) {
+
+        clockInButton.disabled =
+            !!studentAttendance.clockIn;
+
+    }
+
+    if (clockOutButton) {
+
+        clockOutButton.disabled =
+            !studentAttendance.clockIn ||
+            !!studentAttendance.clockOut;
+
+    }
+
+}
+
+
+/* ==================================================
+   CLOCK IN
+================================================== */
+
+function clockIn() {
+
+    const student =
+        getCurrentStudent();
+
+    if (!student) {
+
+        alert(
+            "Student information could not be found."
+        );
+
+        return;
+
+    }
+
+
+    const today =
+        getTodayDate();
+
+    const now =
+        new Date();
+
+
+    let records =
+        getStudentAttendanceRecords();
+
+
+    const batch =
+        getStudentBatch(student);
+
+
+    if (!student.batch) {
+
+        alert(
+            "You are not assigned to a batch."
+        );
+
+        return;
+
+    }
+
+
+    let record =
+        records.find(function(item) {
+
+            return (
+                item.date === today &&
+                item.batchId === student.batch
+            );
+
+        });
+
+
+    /* Create today's batch attendance record */
+
+    if (!record) {
+
+        record = {
+
+            date: today,
+
+            batchId: student.batch,
+
+            batchName:
+                batch
+                    ? batch.name
+                    : student.batch,
+
+            students: [],
+
+            present: 0,
+
+            absent: 0,
+
+            total: 0,
+
+            percentage: 0
+
+        };
+
+        records.push(record);
+
+    }
+
+
+    /* Prevent duplicate clock-in */
+
+    let studentAttendance =
+        record.students.find(function(item) {
+
+            return item.studentId === student.id;
+
+        });
+
+
+    if (
+        studentAttendance &&
+        studentAttendance.clockIn
+    ) {
+
+        alert(
+            "You have already clocked in for today's class."
+        );
+
+        updateClockUI();
+
+        return;
+
+    }
+
+
+    /* Create student attendance */
+
+    if (!studentAttendance) {
+
+        studentAttendance = {
+
+            studentId: student.id,
+
+            studentName: student.name,
+
+            status: "IN_PROGRESS",
+
+            clockIn: now.toISOString(),
+
+            clockOut: null
+
+        };
+
+        record.students.push(
+            studentAttendance
+        );
+
+    } else {
+
+        studentAttendance.status =
+            "IN_PROGRESS";
+
+        studentAttendance.clockIn =
+            now.toISOString();
+
+        studentAttendance.clockOut =
+            null;
+
+    }
+
+
+    updateAttendanceSummary(
+        record
+    );
+
+
+    saveStudentAttendanceRecords(
+        records
+    );
+
+
+    updateClockUI();
+
+
+    alert(
+        "Clock In recorded successfully."
+    );
+
+}
+
+
+/* ==================================================
+   CLOCK OUT
+================================================== */
+
+function clockOut() {
+
+    const student =
+        getCurrentStudent();
+
+    if (!student) {
+
+        alert(
+            "Student information could not be found."
+        );
+
+        return;
+
+    }
+
+
+    const today =
+        getTodayDate();
+
+    const now =
+        new Date();
+
+
+    const records =
+        getStudentAttendanceRecords();
+
+
+    const record =
+        records.find(function(item) {
+
+            return (
+                item.date === today &&
+                item.batchId === student.batch
+            );
+
+        });
+
+
+    if (!record) {
+
+        alert(
+            "Please Clock In before Clocking Out."
+        );
+
+        return;
+
+    }
+
+
+    const studentAttendance =
+        record.students.find(function(item) {
+
+            return item.studentId === student.id;
+
+        });
+
+
+    if (
+        !studentAttendance ||
+        !studentAttendance.clockIn
+    ) {
+
+        alert(
+            "Please Clock In before Clocking Out."
+        );
+
+        return;
+
+    }
+
+
+    if (studentAttendance.clockOut) {
+
+        alert(
+            "You have already clocked out for today's class."
+        );
+
+        updateClockUI();
+
+        return;
+
+    }
+
+
+    studentAttendance.clockOut =
+        now.toISOString();
+
+    studentAttendance.status =
+        "PRESENT";
+
+
+    /* Calculate class duration */
+
+    const clockIn =
+        new Date(
+            studentAttendance.clockIn
+        );
+
+    const durationMilliseconds =
+        now.getTime() -
+        clockIn.getTime();
+
+    const durationMinutes =
+        Math.max(
+            0,
+            Math.round(
+                durationMilliseconds /
+                60000
+            )
+        );
+
+    studentAttendance.duration =
+        durationMinutes;
+
+
+    updateAttendanceSummary(
+        record
+    );
+
+
+    saveStudentAttendanceRecords(
+        records
+    );
+
+
+    updateStudentAttendancePercentage(
+        student.id
+    );
+
+
+    updateClockUI();
+
+
+    alert(
+        "Clock Out recorded successfully."
+    );
+
+}
+
+
+/* ==================================================
+   UPDATE BATCH ATTENDANCE SUMMARY
+================================================== */
+
+function updateAttendanceSummary(
+    record
+) {
+
+    const total =
+        record.students.length;
+
+    const present =
+        record.students.filter(
+            function(student) {
+
+                return (
+                    student.status ===
+                    "PRESENT"
+                );
+
+            }
+        ).length;
+
+
+    const absent =
+        record.students.filter(
+            function(student) {
+
+                return (
+                    student.status ===
+                    "ABSENT"
+                );
+
+            }
+        ).length;
+
+
+    record.total =
+        total;
+
+    record.present =
+        present;
+
+    record.absent =
+        absent;
+
+    record.percentage =
+        total
+            ? Math.round(
+                (
+                    present /
+                    total
+                ) * 100
+            )
+            : 0;
+
+}
+
+
+/* ==================================================
+   UPDATE STUDENT ATTENDANCE %
+================================================== */
+
+function updateStudentAttendancePercentage(
+    studentId
+) {
+
+    const records =
+        getStudentAttendanceRecords();
+
+    let totalClasses = 0;
+    let presentClasses = 0;
+
+
+    records.forEach(function(record) {
+
+        if (!record.students) {
+            return;
+        }
+
+
+        const student =
+            record.students.find(
+                function(item) {
+
+                    return (
+                        item.studentId ===
+                        studentId
+                    );
+
+                }
+            );
+
+
+        if (!student) {
+            return;
+        }
+
+
+        totalClasses++;
+
+
+        if (
+            student.status ===
+            "PRESENT"
+        ) {
+
+            presentClasses++;
+
+        }
+
+    });
+
+
+    const percentage =
+        totalClasses
+            ? Math.round(
+                (
+                    presentClasses /
+                    totalClasses
+                ) * 100
+            )
+            : 0;
+
+
+    const students =
+        JSON.parse(
+            localStorage.getItem(
+                STUDENT_STORAGE_KEY
+            )
+        ) || [];
+
+
+    const index =
+        students.findIndex(
+            function(student) {
+
+                return (
+                    student.id ===
+                    studentId
+                );
+
+            }
+        );
+
+
+    if (index !== -1) {
+
+        students[index].attendance =
+            percentage;
+
+        localStorage.setItem(
+            STUDENT_STORAGE_KEY,
+            JSON.stringify(students)
+        );
+
+    }
+
+
+    /* Update attendance percentage shown on page */
+
+    const percentageElement =
+        document.getElementById(
+            "attendancePercentage"
+        );
+
+    if (percentageElement) {
+
+        percentageElement.textContent =
+            percentage + "%";
+
+    }
+
+}
+
+
+/* ==================================================
+   INITIALIZE CLOCK
+================================================== */
+
+updateClockUI();
+
+</script>
+
+
+<style>
+
+.attendance-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.attendance-card {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.attendance-icon {
+    font-size: 28px;
+}
+
+.attendance-card strong {
+    display: block;
+    font-size: 20px;
+}
+
+.attendance-card span {
+    display: block;
+    color: #777;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.attendance-progress-section {
+    padding: 10px 0;
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 18px;
+    background: #eee;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #4caf50;
+    border-radius: 20px;
+    transition: width 0.5s ease;
+}
+
+.attendance-message {
+    color: #666;
+    margin-top: 12px;
+}
+
+.info-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.info-box div {
+    padding: 18px;
+    background: #f8f8f8;
+    border-radius: 8px;
+}
+
+.info-box strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.info-box span {
+    color: #666;
+}
+
+@media (max-width: 900px) {
+
+    .attendance-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .attendance-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .info-box {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+</body>
+</html>

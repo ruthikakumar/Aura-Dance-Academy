@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Schedule | Aura Dance Academy</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="auth.js"></script>
+</head>
+
+<body>
+
+<script>
+    requireRole("STUDENT", "user-login.html");
+</script>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+            <div class="academy-icon">💃</div>
+
+            <div>
+                <h2>Aura Dance</h2>
+                <span>Academy</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="student-dashboard.html" class="nav-item">
+                <span>📊</span>
+                Dashboard
+            </a>
+
+            <a href="my-profile.html" class="nav-item">
+                <span>👤</span>
+                My Profile
+            </a>
+
+            <a href="my-schedule.html" class="nav-item active">
+                <span>🕐</span>
+                My Schedule
+            </a>
+
+            <a href="my-attendance.html" class="nav-item">
+                <span>📋</span>
+                My Attendance
+            </a>
+
+            <a href="my-payments.html" class="nav-item">
+                <span>💰</span>
+                My Payments
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="logout-button" onclick="logoutUser()">
+                <span>🚪</span>
+                Logout
+            </button>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="dashboard-header">
+
+            <div>
+                <h1>My Schedule</h1>
+                <p>View your dance class schedule.</p>
+            </div>
+
+            <div class="admin-profile">
+
+                <div class="profile-icon" id="profileIcon">
+                    S
+                </div>
+
+                <div>
+                    <strong id="studentName">Student</strong>
+                    <span>Student</span>
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- BATCH SUMMARY -->
+        <section class="schedule-summary">
+
+            <div class="summary-item">
+                <span>💃</span>
+
+                <div>
+                    <strong id="danceType">-</strong>
+                    <small>Dance Type</small>
+                </div>
+            </div>
+
+
+            <div class="summary-item">
+                <span>📚</span>
+
+                <div>
+                    <strong id="level">-</strong>
+                    <small>Level</small>
+                </div>
+            </div>
+
+
+            <div class="summary-item">
+                <span>👨‍🏫</span>
+
+                <div>
+                    <strong id="instructor">-</strong>
+                    <small>Instructor</small>
+                </div>
+            </div>
+
+
+            <div class="summary-item">
+                <span>🗓️</span>
+
+                <div>
+                    <strong id="batchName">-</strong>
+                    <small>Batch</small>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- SCHEDULE -->
+        <section class="dashboard-card">
+
+            <div class="card-header">
+
+                <div>
+                    <h2>Class Schedule</h2>
+                    <p>Your weekly dance class timings.</p>
+                </div>
+
+            </div>
+
+
+            <div id="scheduleContainer">
+
+                <p class="empty-message">
+                    Loading schedule...
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+const STUDENT_KEY = "aura_students";
+const BATCH_KEY = "aura_batches";
+
+
+function getCurrentStudent() {
+
+    const currentUser =
+        JSON.parse(
+            localStorage.getItem("danceAcademy_currentUser")
+        );
+
+    if (!currentUser) {
+        return null;
+    }
+
+    const students =
+        JSON.parse(
+            localStorage.getItem(STUDENT_KEY) || "[]"
+        );
+
+
+    let student =
+        students.find(
+            item => item.id === currentUser.studentId
+        );
+
+
+    if (!student && currentUser.username === "student") {
+
+        student =
+            students.find(
+                item => item.id === "STU001"
+            );
+
+    }
+
+
+    return student || null;
+}
+
+
+function loadSchedule() {
+
+    const student = getCurrentStudent();
+
+    if (!student) {
+        showNoSchedule();
+        return;
+    }
+
+
+    const name =
+        student.name || "Student";
+
+
+    document.getElementById("studentName").textContent =
+        name;
+
+    document.getElementById("profileIcon").textContent =
+        name.charAt(0).toUpperCase();
+
+
+    document.getElementById("danceType").textContent =
+        student.dance || "-";
+
+    document.getElementById("level").textContent =
+        student.level || "-";
+
+    document.getElementById("instructor").textContent =
+        student.instructor || "-";
+
+    document.getElementById("batchName").textContent =
+        student.batch || "-";
+
+
+    const batches =
+        JSON.parse(
+            localStorage.getItem(BATCH_KEY) || "[]"
+        );
+
+
+    const batch =
+        batches.find(
+            item => item.id === student.batch
+        );
+
+
+    if (!batch) {
+        showNoSchedule();
+        return;
+    }
+
+
+    const days =
+        (batch.days || "")
+            .split(",")
+            .map(day => day.trim())
+            .filter(Boolean);
+
+
+    if (days.length === 0) {
+        showNoSchedule();
+        return;
+    }
+
+
+    const dayOrder = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+    ];
+
+
+    days.sort(
+        (a, b) =>
+            dayOrder.indexOf(a) -
+            dayOrder.indexOf(b)
+    );
+
+
+    const container =
+        document.getElementById("scheduleContainer");
+
+
+    container.innerHTML = `
+
+        <div class="schedule-table-wrapper">
+
+            <table class="schedule-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Day</th>
+                        <th>Time</th>
+                        <th>Dance</th>
+                        <th>Level</th>
+                        <th>Instructor</th>
+                        <th>Room</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    ${days.map(day => `
+
+                        <tr>
+
+                            <td>
+                                <strong>${escapeHtml(day)}</strong>
+                            </td>
+
+                            <td>
+                                ${formatTime(batch.startTime)}
+                                -
+                                ${formatTime(batch.endTime)}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(batch.dance || student.dance || "-")}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(batch.level || student.level || "-")}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(batch.instructor || student.instructor || "-")}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(batch.room || "-")}
+                            </td>
+
+                        </tr>
+
+                    `).join("")}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    `;
+
+}
+
+
+function formatTime(time) {
+
+    if (!time) {
+        return "-";
+    }
+
+
+    const parts = time.split(":");
+
+    let hour =
+        parseInt(parts[0], 10);
+
+    const minute =
+        parts[1] || "00";
+
+
+    const period =
+        hour >= 12 ? "PM" : "AM";
+
+
+    hour =
+        hour % 12 || 12;
+
+
+    return `${hour}:${minute} ${period}`;
+
+}
+
+
+function showNoSchedule() {
+
+    document.getElementById("scheduleContainer").innerHTML = `
+
+        <div class="no-schedule">
+
+            <div class="no-schedule-icon">
+                🕐
+            </div>
+
+            <h3>No Schedule Available</h3>
+
+            <p>
+                Your batch schedule has not been assigned yet.
+            </p>
+
+        </div>
+
+    `;
+
+}
+
+
+function escapeHtml(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value || "";
+
+    return div.innerHTML;
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadSchedule
+);
+
+</script>
+
+
+<style>
+
+.schedule-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.summary-item {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.summary-item > span {
+    font-size: 26px;
+}
+
+.summary-item strong {
+    display: block;
+    font-size: 16px;
+}
+
+.summary-item small {
+    display: block;
+    color: #777;
+    margin-top: 4px;
+}
+
+.schedule-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.schedule-table th,
+.schedule-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.schedule-table th {
+    background: #f8f8f8;
+    font-weight: 600;
+}
+
+.schedule-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.no-schedule {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.no-schedule-icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+.no-schedule h3 {
+    margin: 0 0 8px;
+}
+
+.no-schedule p {
+    color: #777;
+}
+
+.empty-message {
+    color: #777;
+}
+
+@media (max-width: 900px) {
+
+    .schedule-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .schedule-summary {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+</style>
+
+</body>
+</html>

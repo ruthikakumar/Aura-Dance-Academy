@@ -1,0 +1,2688 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fees & Payments - Aura Dance Academy</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- ==================================================
+         SIDEBAR
+         ================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="academy-icon">
+                A
+            </div>
+
+            <div>
+                <h2>Aura Dance</h2>
+                <span>Academy</span>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="admin-dashboard.html" class="nav-item">
+                <span>📊</span>
+                Dashboard
+            </a>
+
+            <a href="students.html" class="nav-item">
+                <span>👥</span>
+                Students
+            </a>
+
+            <a href="dances.html" class="nav-item">
+                <span>💃</span>
+                Dance classes
+            </a>
+
+            <a href="batches.html" class="nav-item">
+                <span>🗓️</span>
+                Batches & Schedules
+            </a>
+
+            <a href="fees.html" class="nav-item active">
+                <span>💰</span>
+                Fees & Payments
+            </a>
+
+            <a href="instructors.html" class="nav-item">
+                <span>👨‍🏫</span>
+                Instructors
+            </a>
+
+            <a href="attendance.html" class="nav-item">
+                <span>✅</span>
+                Attendance
+            </a>
+
+            <a href="announcements.html" class="nav-item">
+                <span>📢</span>
+                Announcements
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutUser()"
+            >
+                <span>🚪</span>
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ==================================================
+         MAIN CONTENT
+         ================================================== -->
+
+    <main class="main-content">
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <h1>
+                    Fees & Payments
+                </h1>
+
+                <p>
+                    Manage student fees and payment records.
+                </p>
+
+            </div>
+
+
+            <div class="admin-profile">
+
+                <div class="profile-icon">
+                    A
+                </div>
+
+                <div>
+
+                    <strong id="adminName">
+                        Admin
+                    </strong>
+
+                    <span>
+                        Administrator
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ==================================================
+             SUMMARY CARDS
+             ================================================== -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    💰
+                </div>
+
+                <div>
+
+                    <span>
+                        Total Fees
+                    </span>
+
+                    <h2 id="totalFees">
+                        ₹0
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ✅
+                </div>
+
+                <div>
+
+                    <span>
+                        Amount Collected
+                    </span>
+
+                    <h2 id="collectedFees">
+                        ₹0
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    ⏳
+                </div>
+
+                <div>
+
+                    <span>
+                        Pending Amount
+                    </span>
+
+                    <h2 id="pendingFeesAmount">
+                        ₹0
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    👥
+                </div>
+
+                <div>
+
+                    <span>
+                        Pending Students
+                    </span>
+
+                    <h2 id="pendingStudents">
+                        0
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             PAGE ACTIONS
+             ================================================== -->
+
+        <div class="page-actions">
+
+            <div>
+
+                <h2>
+                    Payment Records
+                </h2>
+
+                <p class="page-description">
+                    Track student fee payments and pending balances.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="primary-button"
+                onclick="openPaymentModal()"
+            >
+                + Add New Student
+            </button>
+
+        </div>
+
+
+        <!-- ==================================================
+             FILTERS
+             ================================================== -->
+
+        <div class="filter-card">
+
+            <div class="search-box">
+
+                <span>
+                    🔍
+                </span>
+
+                <input
+                    type="text"
+                    id="searchPayment"
+                    placeholder="Search student or payment ID..."
+                    oninput="filterPayments()"
+                >
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <select
+                    id="paymentStatusFilter"
+                    onchange="filterPayments()"
+                >
+
+                    <option value="">
+                        All Status
+                    </option>
+
+                    <option value="PAID">
+                        Paid
+                    </option>
+
+                    <option value="PARTIAL">
+                        Partial
+                    </option>
+
+                    <option value="PENDING">
+                        Pending
+                    </option>
+
+                </select>
+
+
+                <select
+                    id="paymentMonthFilter"
+                    onchange="filterPayments()"
+                >
+
+                    <option value="">
+                        All Months
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             PAYMENT TABLE
+             ================================================== -->
+
+        <div class="table-card">
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Payment ID
+                            </th>
+
+                            <th>
+                                Student
+                            </th>
+
+                            <th>
+                                Fee Amount
+                            </th>
+
+                            <th>
+                                Paid
+                            </th>
+
+                            <th>
+                                Pending
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Payment Date
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="paymentTableBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             EMPTY STATE
+             ================================================== -->
+
+        <div
+            id="emptyState"
+            class="empty-state"
+            style="display: none;"
+        >
+
+            <div class="empty-icon">
+                💰
+            </div>
+
+            <h3>
+                No payment records found
+            </h3>
+
+            <p>
+                Add a new student and their payment details.
+            </p>
+
+            <button
+                type="button"
+                class="primary-button"
+                onclick="openPaymentModal()"
+            >
+                + Add New Student
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- ==================================================
+     ADD NEW STUDENT + PAYMENT MODAL
+     ================================================== -->
+
+<div
+    class="modal-overlay"
+    id="paymentModal"
+    style="display: none;"
+>
+
+    <div
+        class="modal"
+        style="max-height: 90vh; overflow-y: auto;"
+    >
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="modalTitle">
+                    Add New Student
+                </h2>
+
+                <p>
+                    Add a new student and their first payment.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close"
+                onclick="closePaymentModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="paymentForm">
+
+            <!-- ==================================================
+                 STUDENT DETAILS
+                 ================================================== -->
+
+            <h3 style="margin: 10px 0 18px;">
+                Student Details
+            </h3>
+
+
+            <div class="form-grid">
+
+                <!-- Student Name -->
+
+                <div class="form-group">
+
+                    <label for="studentName">
+                        Student Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="studentName"
+                        placeholder="Enter student name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Email -->
+
+                <div class="form-group">
+
+                    <label for="studentEmail">
+                        Email *
+                    </label>
+
+                    <input
+                        type="email"
+                        id="studentEmail"
+                        placeholder="Enter email"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Phone -->
+
+                <div class="form-group">
+
+                    <label for="studentPhone">
+                        Phone *
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="studentPhone"
+                        placeholder="Enter phone number"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Age -->
+
+                <div class="form-group">
+
+                    <label for="studentAge">
+                        Age
+                    </label>
+
+                    <input
+                        type="number"
+                        id="studentAge"
+                        min="1"
+                        max="100"
+                        placeholder="Enter age"
+                    >
+
+                </div>
+
+
+                <!-- Gender -->
+
+                <div class="form-group">
+
+                    <label for="studentGender">
+                        Gender
+                    </label>
+
+                    <select id="studentGender">
+
+                        <option value="">
+                            Select Gender
+                        </option>
+
+                        <option value="Male">
+                            Male
+                        </option>
+
+                        <option value="Female">
+                            Female
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Dance -->
+
+                <div class="form-group">
+
+    <label for="studentDance">
+        Dance Type *
+    </label>
+
+    <select
+        id="studentDance"
+        required
+    >
+
+        <option value="">
+            Select Dance Type
+        </option>
+
+    </select>
+
+</div>
+
+
+                <!-- Level -->
+
+                <div class="form-group">
+
+                    <label for="studentLevel">
+                        Dance Level *
+                    </label>
+
+                    <select
+                        id="studentLevel"
+                        required
+                    >
+
+                        <option value="">
+                            Select Level
+                        </option>
+
+                        <option value="Beginner">
+                            Beginner
+                        </option>
+
+                        <option value="Intermediate">
+                            Intermediate
+                        </option>
+
+                        <option value="Advanced">
+                            Advanced
+                        </option>
+
+                        <option value="Professional">
+                            Professional
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Batch -->
+
+                <div class="form-group">
+
+                    <label for="studentBatch">
+                        Batch *
+                    </label>
+
+                    <select id="studentBatch" required>
+    <option value="">Select Batch</option>
+</select>
+
+                </div>
+
+
+                <div class="form-group">
+
+    <label for="studentInstructor">
+        Instructor *
+    </label>
+
+    <select
+        id="studentInstructor"
+        required
+    >
+
+        <option value="">
+            Select Instructor
+        </option>
+
+    </select>
+
+</div>
+
+
+                <!-- Joining Date -->
+
+                <div class="form-group">
+
+                    <label for="joiningDate">
+                        Joining Date *
+                    </label>
+
+                    <input
+                        type="date"
+                        id="joiningDate"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 PAYMENT DETAILS
+                 ================================================== -->
+
+            <h3 style="margin: 28px 0 18px;">
+                Payment Details
+            </h3>
+
+
+            <div class="form-grid">
+
+                <!-- Fee Amount -->
+
+                <div class="form-group">
+
+                    <label for="feeAmount">
+                        Fee Amount *
+                    </label>
+
+                    <input
+                        type="number"
+                        id="feeAmount"
+                        min="0"
+                        step="0.01"
+                        placeholder="Example: 5000"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Paid Amount -->
+
+                <div class="form-group">
+
+                    <label for="paidAmount">
+                        Paid Amount *
+                    </label>
+
+                    <input
+                        type="number"
+                        id="paidAmount"
+                        min="0"
+                        step="0.01"
+                        placeholder="Example: 5000"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Payment Date -->
+
+                <div class="form-group">
+
+                    <label for="paymentDate">
+                        Payment Date *
+                    </label>
+
+                    <input
+                        type="date"
+                        id="paymentDate"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Payment Method -->
+
+                <div class="form-group">
+
+                    <label for="paymentMethod">
+                        Payment Method
+                    </label>
+
+                    <select id="paymentMethod">
+
+                        <option value="Cash">
+                            Cash
+                        </option>
+
+                        <option value="UPI">
+                            UPI
+                        </option>
+
+                        <option value="Card">
+                            Card
+                        </option>
+
+                        <option value="Bank Transfer">
+                            Bank Transfer
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Fee Month -->
+
+                <div class="form-group">
+
+                    <label for="paymentMonth">
+                        Fee Month *
+                    </label>
+
+                    <input
+                        type="month"
+                        id="paymentMonth"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Notes -->
+
+                <div class="form-group form-full">
+
+                    <label for="paymentNotes">
+                        Notes
+                    </label>
+
+                    <textarea
+                        id="paymentNotes"
+                        rows="3"
+                        placeholder="Optional payment notes..."
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 ACTIONS
+                 ================================================== -->
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="closePaymentModal()"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="saveNewStudentPayment()"
+                >
+                    Save Student & Payment
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="auth.js"></script>
+<script src="admin.js"></script>
+
+
+<script>
+
+/* ==================================================
+   AUTHENTICATION
+   ================================================== */
+
+requireRole(
+    "ADMIN",
+    "admin-login.html"
+);
+
+
+/* ==================================================
+   STORAGE KEYS
+   ================================================== */
+
+const PAYMENT_STORAGE_KEY =
+    "aura_payments";
+
+const STUDENT_STORAGE_KEY =
+    "aura_students";
+
+
+/* ==================================================
+   DEFAULT PAYMENTS
+   ================================================== */
+
+const defaultPayments = [
+
+    {
+        id: "PAY001",
+        studentId: "STU001",
+        feeAmount: 5000,
+        paidAmount: 5000,
+        paymentDate: "2026-09-05",
+        paymentMethod: "UPI",
+        month: "2026-09",
+        notes: "Monthly fee"
+    },
+
+    {
+        id: "PAY002",
+        studentId: "STU002",
+        feeAmount: 5000,
+        paidAmount: 2500,
+        paymentDate: "2026-09-07",
+        paymentMethod: "Cash",
+        month: "2026-09",
+        notes: "Partial payment"
+    },
+
+    {
+        id: "PAY003",
+        studentId: "STU003",
+        feeAmount: 6000,
+        paidAmount: 6000,
+        paymentDate: "2026-09-10",
+        paymentMethod: "UPI",
+        month: "2026-09",
+        notes: "Monthly fee"
+    }
+
+];
+
+
+/* ==================================================
+   GET PAYMENTS
+   ================================================== */
+
+function getPayments() {
+
+    const stored =
+        localStorage.getItem(
+            PAYMENT_STORAGE_KEY
+        );
+
+
+    if (!stored) {
+
+        localStorage.setItem(
+            PAYMENT_STORAGE_KEY,
+            JSON.stringify(defaultPayments)
+        );
+
+        return defaultPayments;
+
+    }
+
+
+    try {
+
+        const payments =
+            JSON.parse(stored);
+
+
+        return Array.isArray(payments)
+            ? payments
+            : [];
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+/* ==================================================
+   SAVE PAYMENTS
+   ================================================== */
+
+function savePayments(payments) {
+
+    localStorage.setItem(
+        PAYMENT_STORAGE_KEY,
+        JSON.stringify(payments)
+    );
+
+}
+
+
+/* ==================================================
+   GET STUDENTS
+   ================================================== */
+
+function getStudentsForFees() {
+
+    const stored =
+        localStorage.getItem(
+            STUDENT_STORAGE_KEY
+        );
+
+
+    if (!stored) {
+        return [];
+    }
+
+
+    try {
+
+        const students =
+            JSON.parse(stored);
+
+
+        return Array.isArray(students)
+            ? students
+            : [];
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+/* ==================================================
+   SAVE STUDENTS
+   ================================================== */
+
+function saveStudentsForFees(students) {
+
+    localStorage.setItem(
+        STUDENT_STORAGE_KEY,
+        JSON.stringify(students)
+    );
+
+}
+
+
+/* ==================================================
+   GET STUDENT NAME
+   ================================================== */
+
+function getStudentName(studentId) {
+
+    const students =
+        getStudentsForFees();
+
+
+    const student =
+        students.find(
+            item => item.id === studentId
+        );
+
+
+    return student
+        ? student.name
+        : studentId;
+
+}
+
+
+/* ==================================================
+   GENERATE NEW STUDENT ID
+   ================================================== */
+
+function generateStudentId() {
+
+    const students =
+        getStudentsForFees();
+
+
+    let highestNumber = 0;
+
+
+    students.forEach(student => {
+
+        const match =
+            String(student.id)
+                .match(/^STU(\d+)$/);
+
+
+        if (match) {
+
+            const number =
+                Number(match[1]);
+
+
+            if (
+                number >
+                highestNumber
+            ) {
+
+                highestNumber =
+                    number;
+
+            }
+
+        }
+
+    });
+
+
+    return (
+        "STU" +
+        String(
+            highestNumber + 1
+        ).padStart(3, "0")
+    );
+
+}
+
+
+/* ==================================================
+   GENERATE PAYMENT ID
+   ================================================== */
+
+function generatePaymentId() {
+
+    const payments =
+        getPayments();
+
+
+    let highestNumber = 0;
+
+
+    payments.forEach(payment => {
+
+        const match =
+            String(payment.id)
+                .match(/^PAY(\d+)$/);
+
+
+        if (match) {
+
+            const number =
+                Number(match[1]);
+
+
+            if (
+                number >
+                highestNumber
+            ) {
+
+                highestNumber =
+                    number;
+
+            }
+
+        }
+
+    });
+
+
+    return (
+        "PAY" +
+        String(
+            highestNumber + 1
+        ).padStart(3, "0")
+    );
+
+}
+
+
+/* ==================================================
+   GET PAYMENT STATUS
+   ================================================== */
+
+function getPaymentStatus(payment) {
+
+    const fee =
+        Number(
+            payment.feeAmount
+        ) || 0;
+
+
+    const paid =
+        Number(
+            payment.paidAmount
+        ) || 0;
+
+
+    if (paid >= fee) {
+        return "PAID";
+    }
+
+
+    if (paid > 0) {
+        return "PARTIAL";
+    }
+
+
+    return "PENDING";
+
+}
+
+
+/* ==================================================
+   FORMAT CURRENCY
+   ================================================== */
+
+function formatCurrency(amount) {
+
+    return (
+        "₹" +
+        Number(amount || 0)
+            .toLocaleString("en-IN")
+    );
+
+}
+
+
+/* ==================================================
+   FORMAT DATE
+   ================================================== */
+
+function formatDate(dateString) {
+
+    if (!dateString) {
+        return "-";
+    }
+
+
+    const date =
+        new Date(
+            dateString +
+            "T00:00:00"
+        );
+
+
+    return date.toLocaleDateString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        }
+    );
+
+}
+
+
+/* ==================================================
+   STATUS CLASS
+   ================================================== */
+
+function getStatusClass(status) {
+
+    if (status === "PAID") {
+        return "status-paid";
+    }
+
+
+    if (status === "PARTIAL") {
+        return "status-partial";
+    }
+
+
+    return "status-pending";
+
+}
+
+
+/* ==================================================
+   RENDER PAYMENTS
+   ================================================== */
+
+function renderPayments(
+    payments = getPayments()
+) {
+
+    const tbody =
+        document.getElementById(
+            "paymentTableBody"
+        );
+
+
+    const emptyState =
+        document.getElementById(
+            "emptyState"
+        );
+
+
+    tbody.innerHTML = "";
+
+
+    if (!payments.length) {
+
+        emptyState.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    emptyState.style.display =
+        "none";
+
+
+    payments.forEach(payment => {
+
+        const status =
+            getPaymentStatus(
+                payment
+            );
+
+
+        const pending =
+            Math.max(
+                0,
+                Number(
+                    payment.feeAmount
+                ) -
+                Number(
+                    payment.paidAmount
+                )
+            );
+
+
+        const studentName =
+            getStudentName(
+                payment.studentId
+            );
+
+
+        const row =
+            document.createElement(
+                "tr"
+            );
+
+
+        row.innerHTML = `
+
+            <td>
+                <strong>
+                    ${escapeHTML(
+                        payment.id
+                    )}
+                </strong>
+            </td>
+
+
+            <td>
+
+                <div class="student-table-info">
+
+                    <div class="table-avatar">
+
+                        ${escapeHTML(
+                            studentName
+                                .charAt(0)
+                                .toUpperCase()
+                        )}
+
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            ${escapeHTML(
+                                studentName
+                            )}
+                        </strong>
+
+                        <small>
+                            ${escapeHTML(
+                                payment.studentId
+                            )}
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </td>
+
+
+            <td>
+                ${formatCurrency(
+                    payment.feeAmount
+                )}
+            </td>
+
+
+            <td>
+                ${formatCurrency(
+                    payment.paidAmount
+                )}
+            </td>
+
+
+            <td>
+                ${formatCurrency(
+                    pending
+                )}
+            </td>
+
+
+            <td>
+
+                <span
+                    class="status-badge
+                    ${getStatusClass(status)}"
+                >
+                    ${status}
+                </span>
+
+            </td>
+
+
+            <td>
+                ${formatDate(
+                    payment.paymentDate
+                )}
+            </td>
+
+
+            <td>
+
+                <div class="table-actions">
+
+                    <button
+                        type="button"
+                        class="edit-button"
+                        onclick="editPayment('${payment.id}')"
+                    >
+                        Edit
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="delete-button"
+                        onclick="deletePayment('${payment.id}')"
+                    >
+                        Delete
+                    </button>
+
+                </div>
+
+            </td>
+
+        `;
+
+
+        tbody.appendChild(row);
+
+    });
+
+}
+
+
+/* ==================================================
+   FILTER PAYMENTS
+   ================================================== */
+
+function filterPayments() {
+
+    const search =
+        document
+            .getElementById(
+                "searchPayment"
+            )
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    const status =
+        document.getElementById(
+            "paymentStatusFilter"
+        ).value;
+
+
+    const month =
+        document.getElementById(
+            "paymentMonthFilter"
+        ).value;
+
+
+    const payments =
+        getPayments();
+
+
+    const filtered =
+        payments.filter(
+            payment => {
+
+                const studentName =
+                    getStudentName(
+                        payment.studentId
+                    ).toLowerCase();
+
+
+                const matchesSearch =
+                    !search ||
+                    payment.id
+                        .toLowerCase()
+                        .includes(search) ||
+                    payment.studentId
+                        .toLowerCase()
+                        .includes(search) ||
+                    studentName
+                        .includes(search);
+
+
+                const matchesStatus =
+                    !status ||
+                    getPaymentStatus(
+                        payment
+                    ) === status;
+
+
+                const matchesMonth =
+                    !month ||
+                    payment.month === month;
+
+
+                return (
+                    matchesSearch &&
+                    matchesStatus &&
+                    matchesMonth
+                );
+
+            }
+        );
+
+
+    renderPayments(
+        filtered
+    );
+
+}
+
+
+/* ==================================================
+   UPDATE SUMMARY
+   ================================================== */
+
+function updatePaymentSummary() {
+
+    const payments =
+        getPayments();
+
+
+    let totalFees = 0;
+    let collected = 0;
+    let pending = 0;
+
+
+    payments.forEach(
+        payment => {
+
+            const fee =
+                Number(
+                    payment.feeAmount
+                ) || 0;
+
+
+            const paid =
+                Number(
+                    payment.paidAmount
+                ) || 0;
+
+
+            totalFees += fee;
+
+
+            collected += Math.min(
+                paid,
+                fee
+            );
+
+
+            pending += Math.max(
+                0,
+                fee - paid
+            );
+
+        }
+    );
+
+
+    const pendingStudents =
+        payments.filter(
+            payment =>
+                getPaymentStatus(
+                    payment
+                ) !== "PAID"
+        ).length;
+
+
+    document.getElementById(
+        "totalFees"
+    ).textContent =
+        formatCurrency(
+            totalFees
+        );
+
+
+    document.getElementById(
+        "collectedFees"
+    ).textContent =
+        formatCurrency(
+            collected
+        );
+
+
+    document.getElementById(
+        "pendingFeesAmount"
+    ).textContent =
+        formatCurrency(
+            pending
+        );
+
+
+    document.getElementById(
+        "pendingStudents"
+    ).textContent =
+        pendingStudents;
+
+}
+
+
+/* ==================================================
+   LOAD MONTH FILTER
+   ================================================== */
+
+function loadMonthFilter() {
+
+    const select =
+        document.getElementById(
+            "paymentMonthFilter"
+        );
+
+
+    const payments =
+        getPayments();
+
+
+    const months =
+        [
+            ...new Set(
+                payments
+                    .map(
+                        payment =>
+                            payment.month
+                    )
+                    .filter(Boolean)
+            )
+        ];
+
+
+    months.sort().reverse();
+
+
+    select.innerHTML =
+        '<option value="">All Months</option>';
+
+
+    months.forEach(
+        month => {
+
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                month;
+
+
+            const parts =
+                month.split("-");
+
+
+            const year =
+                Number(parts[0]);
+
+
+            const monthNumber =
+                Number(parts[1]);
+
+
+            const date =
+                new Date(
+                    year,
+                    monthNumber - 1,
+                    1
+                );
+
+
+            option.textContent =
+                date.toLocaleDateString(
+                    "en-IN",
+                    {
+                        month: "long",
+                        year: "numeric"
+                    }
+                );
+
+
+            select.appendChild(
+                option
+            );
+
+        }
+    );
+
+}
+
+
+
+/* ==================================================
+   LOAD DANCE TYPES
+   ================================================== */
+
+function loadDanceTypes() {
+
+    const select =
+        document.getElementById("studentDance");
+
+    if (!select) {
+        return;
+    }
+
+    select.innerHTML =
+        '<option value="">Select Dance Type</option>';
+
+    const stored =
+        localStorage.getItem("aura_dance_types");
+
+    if (!stored) {
+        return;
+    }
+
+    try {
+
+        const dances =
+            JSON.parse(stored);
+
+        if (!Array.isArray(dances)) {
+            return;
+        }
+
+        dances.forEach(dance => {
+
+            const option =
+                document.createElement("option");
+
+            /*
+             * Your dances.html stores the
+             * dance name in the "name" field.
+             */
+
+            option.value =
+                dance.name;
+
+            option.textContent =
+                dance.name;
+
+            select.appendChild(option);
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load dance types:",
+            error
+        );
+
+    }
+
+}
+
+/* ==================================================
+   LOAD INSTRUCTORS
+   ================================================== */
+
+function loadInstructors() {
+
+    const select =
+        document.getElementById("studentInstructor");
+
+    if (!select) {
+        return;
+    }
+
+    select.innerHTML =
+        '<option value="">Select Instructor</option>';
+
+    const stored =
+        localStorage.getItem("aura_instructors");
+
+    if (!stored) {
+        return;
+    }
+
+    try {
+
+        const instructors =
+            JSON.parse(stored);
+
+        if (!Array.isArray(instructors)) {
+            return;
+        }
+
+        instructors
+            .filter(instructor =>
+                instructor.status === "ACTIVE"
+            )
+            .forEach(instructor => {
+
+                const option =
+                    document.createElement("option");
+
+                option.value =
+                    instructor.name;
+
+                option.textContent =
+                    instructor.name;
+
+                select.appendChild(option);
+
+            });
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load instructors:",
+            error
+        );
+
+    }
+
+}
+
+//loadbatches
+
+function loadBatches() {
+
+    const select =
+        document.getElementById("studentBatch");
+
+    if (!select) {
+        return;
+    }
+
+    select.innerHTML =
+        '<option value="">Select Batch</option>';
+
+    const stored =
+        localStorage.getItem("aura_batches");
+
+    if (!stored) {
+        return;
+    }
+
+    try {
+
+        const batches =
+            JSON.parse(stored);
+
+        if (!Array.isArray(batches)) {
+            return;
+        }
+
+        batches.forEach(batch => {
+
+            if (!batch.id || !batch.name) {
+                return;
+            }
+
+            const option =
+                document.createElement("option");
+
+            option.value = batch.id;
+
+            option.textContent =
+                `${batch.id} - ${batch.name}`;
+
+            select.appendChild(option);
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load batches:",
+            error
+        );
+
+    }
+
+}
+
+/* ==================================================
+   OPEN ADD NEW STUDENT MODAL
+   ================================================== */
+
+function openPaymentModal() {
+
+    const form =
+        document.getElementById(
+            "paymentForm"
+        );
+
+
+    form.reset();
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Add New Student";
+
+
+    const today =
+        new Date();
+
+
+    const todayString =
+        today.toISOString()
+            .split("T")[0];
+
+
+    const monthString =
+        today.toISOString()
+            .slice(0, 7);
+
+
+    document.getElementById(
+        "joiningDate"
+    ).value =
+        todayString;
+
+
+    document.getElementById(
+        "paymentDate"
+    ).value =
+        todayString;
+
+
+    document.getElementById(
+        "paymentMonth"
+    ).value =
+        monthString;
+
+
+    document.getElementById(
+        "paymentModal"
+    ).style.display =
+        "flex";
+
+}
+
+
+/* ==================================================
+   CLOSE MODAL
+   ================================================== */
+
+function closePaymentModal() {
+
+    document.getElementById(
+        "paymentModal"
+    ).style.display =
+        "none";
+
+}
+
+
+/* ==================================================
+   SAVE NEW STUDENT + PAYMENT
+   ================================================== */
+
+function saveNewStudentPayment() {
+
+    /* -----------------------------------------------
+       GET STUDENT DATA
+       ----------------------------------------------- */
+
+    const name =
+        document.getElementById(
+            "studentName"
+        ).value.trim();
+
+
+    const email =
+        document.getElementById(
+            "studentEmail"
+        ).value.trim();
+
+
+    const phone =
+        document.getElementById(
+            "studentPhone"
+        ).value.trim();
+
+
+    const age =
+        document.getElementById(
+            "studentAge"
+        ).value;
+
+
+    const gender =
+        document.getElementById(
+            "studentGender"
+        ).value;
+
+
+    const dance =
+        document.getElementById(
+            "studentDance"
+        ).value.trim();
+
+
+    const level =
+        document.getElementById(
+            "studentLevel"
+        ).value;
+
+
+    const batch =
+        document.getElementById(
+            "studentBatch"
+        ).value.trim();
+
+
+    const instructor =
+        document.getElementById(
+            "studentInstructor"
+        ).value.trim();
+
+
+    const joiningDate =
+        document.getElementById(
+            "joiningDate"
+        ).value;
+
+
+    /* -----------------------------------------------
+       GET PAYMENT DATA
+       ----------------------------------------------- */
+
+    const feeAmount =
+        Number(
+            document.getElementById(
+                "feeAmount"
+            ).value
+        );
+
+
+    const paidAmount =
+        Number(
+            document.getElementById(
+                "paidAmount"
+            ).value
+        );
+
+
+    const paymentDate =
+        document.getElementById(
+            "paymentDate"
+        ).value;
+
+
+    const paymentMethod =
+        document.getElementById(
+            "paymentMethod"
+        ).value;
+
+
+    const paymentMonth =
+        document.getElementById(
+            "paymentMonth"
+        ).value;
+
+
+    const notes =
+        document.getElementById(
+            "paymentNotes"
+        ).value.trim();
+
+
+    /* -----------------------------------------------
+       VALIDATION
+       ----------------------------------------------- */
+
+    if (!name) {
+
+        alert(
+            "Please enter the student name."
+        );
+
+        return;
+
+    }
+
+
+    if (!email) {
+
+        alert(
+            "Please enter the student email."
+        );
+
+        return;
+
+    }
+
+
+    if (!phone) {
+
+        alert(
+            "Please enter the student phone number."
+        );
+
+        return;
+
+    }
+
+
+    if (!dance) {
+
+        alert(
+            "Please enter the dance type."
+        );
+
+        return;
+
+    }
+
+
+    if (!level) {
+
+        alert(
+            "Please select the dance level."
+        );
+
+        return;
+
+    }
+
+
+    if (!batch) {
+
+        alert(
+            "Please enter the batch."
+        );
+
+        return;
+
+    }
+
+
+    if (!instructor) {
+
+        alert(
+            "Please enter the instructor."
+        );
+
+        return;
+
+    }
+
+
+    if (!joiningDate) {
+
+        alert(
+            "Please select the joining date."
+        );
+
+        return;
+
+    }
+
+
+    if (!feeAmount || feeAmount <= 0) {
+
+        alert(
+            "Please enter a valid fee amount."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        paidAmount < 0 ||
+        paidAmount > feeAmount
+    ) {
+
+        alert(
+            "Paid amount cannot be greater than the fee amount."
+        );
+
+        return;
+
+    }
+
+
+    if (!paymentDate) {
+
+        alert(
+            "Please select the payment date."
+        );
+
+        return;
+
+    }
+
+
+    if (!paymentMonth) {
+
+        alert(
+            "Please select the fee month."
+        );
+
+        return;
+
+    }
+
+
+    /* -----------------------------------------------
+       GET CURRENT DATA
+       ----------------------------------------------- */
+
+    const students =
+        getStudentsForFees();
+
+
+    const payments =
+        getPayments();
+
+
+    /* -----------------------------------------------
+       CREATE NEW STUDENT ID
+       ----------------------------------------------- */
+
+    const studentId =
+        generateStudentId();
+
+
+    /* -----------------------------------------------
+       CREATE STUDENT
+       ----------------------------------------------- */
+
+    const newStudent = {
+
+        id:
+            studentId,
+
+        name:
+            name,
+
+        email:
+            email,
+
+        phone:
+            phone,
+
+        age:
+            age,
+
+        gender:
+            gender,
+
+        dance:
+            dance,
+
+        level:
+            level,
+
+        batch:
+            batch,
+
+        instructor:
+            instructor,
+
+        joiningDate:
+            joiningDate,
+
+        feeStatus:
+            paidAmount >= feeAmount
+                ? "PAID"
+                : "PENDING",
+
+        attendance:
+            0,
+
+        status:
+            "ACTIVE"
+
+    };
+
+
+    /* -----------------------------------------------
+       CREATE PAYMENT
+       ----------------------------------------------- */
+
+    const paymentId =
+        generatePaymentId();
+
+
+    const newPayment = {
+
+        id:
+            paymentId,
+
+        studentId:
+            studentId,
+
+        feeAmount:
+            feeAmount,
+
+        paidAmount:
+            paidAmount,
+
+        paymentDate:
+            paymentDate,
+
+        paymentMethod:
+            paymentMethod,
+
+        month:
+            paymentMonth,
+
+        notes:
+            notes
+
+    };
+
+
+    /* -----------------------------------------------
+       SAVE STUDENT
+       ----------------------------------------------- */
+
+    students.push(
+        newStudent
+    );
+
+
+    saveStudentsForFees(
+        students
+    );
+
+
+    /* -----------------------------------------------
+       SAVE PAYMENT
+       ----------------------------------------------- */
+
+    payments.push(
+        newPayment
+    );
+
+
+    savePayments(
+        payments
+    );
+
+
+    /* -----------------------------------------------
+       REFRESH PAGE
+       ----------------------------------------------- */
+
+    renderPayments();
+
+    updatePaymentSummary();
+
+    loadMonthFilter();
+
+
+    /* -----------------------------------------------
+       CLOSE MODAL
+       ----------------------------------------------- */
+
+    closePaymentModal();
+
+
+    /* -----------------------------------------------
+       SUCCESS MESSAGE
+       ----------------------------------------------- */
+
+    alert(
+        `New student ${name} added successfully.\n\n` +
+        `Student ID: ${studentId}\n` +
+        `Payment ID: ${paymentId}`
+    );
+
+}
+
+
+/* ==================================================
+   EDIT PAYMENT
+   ================================================== */
+
+function editPayment(id) {
+
+    const payments =
+        getPayments();
+
+
+    const payment =
+        payments.find(
+            item =>
+                item.id === id
+        );
+
+
+    if (!payment) {
+
+        alert(
+            "Payment record not found."
+        );
+
+        return;
+
+    }
+
+
+    /*
+       Since this page is now for creating
+       new students only, Edit is limited
+       to payment information.
+
+       Student information is not changed here.
+    */
+
+
+    const newFeeAmount =
+        prompt(
+            "Enter new fee amount:",
+            payment.feeAmount
+        );
+
+
+    if (
+        newFeeAmount === null
+    ) {
+        return;
+    }
+
+
+    const feeAmount =
+        Number(
+            newFeeAmount
+        );
+
+
+    if (
+        !feeAmount ||
+        feeAmount <= 0
+    ) {
+
+        alert(
+            "Invalid fee amount."
+        );
+
+        return;
+
+    }
+
+
+    const newPaidAmount =
+        prompt(
+            "Enter new paid amount:",
+            payment.paidAmount
+        );
+
+
+    if (
+        newPaidAmount === null
+    ) {
+        return;
+    }
+
+
+    const paidAmount =
+        Number(
+            newPaidAmount
+        );
+
+
+    if (
+        paidAmount < 0 ||
+        paidAmount > feeAmount
+    ) {
+
+        alert(
+            "Paid amount cannot be greater than the fee amount."
+        );
+
+        return;
+
+    }
+
+
+    payment.feeAmount =
+        feeAmount;
+
+
+    payment.paidAmount =
+        paidAmount;
+
+
+    savePayments(
+        payments
+    );
+
+
+    renderPayments();
+
+    updatePaymentSummary();
+
+
+    alert(
+        "Payment updated successfully."
+    );
+
+}
+
+
+/* ==================================================
+   DELETE PAYMENT
+   ================================================== */
+
+function deletePayment(id) {
+
+    const payments =
+        getPayments();
+
+
+    const payment =
+        payments.find(
+            item =>
+                item.id === id
+        );
+
+
+    if (!payment) {
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            `Delete payment ${payment.id}?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    const updated =
+        payments.filter(
+            item =>
+                item.id !== id
+        );
+
+
+    savePayments(
+        updated
+    );
+
+
+    renderPayments();
+
+    updatePaymentSummary();
+
+    loadMonthFilter();
+
+}
+
+
+/* ==================================================
+   ESCAPE HTML
+   ================================================== */
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* ==================================================
+   LOGOUT
+   ================================================== */
+
+function logoutUser() {
+
+    logout();
+
+    window.location.href =
+        "admin-login.html";
+
+}
+
+
+/* ==================================================
+   INITIALIZE
+   ================================================== */
+
+function initializeFeesPage() {
+
+    loadDanceTypes();
+
+    loadInstructors();
+
+    loadBatches();
+
+    loadMonthFilter();
+
+    renderPayments();
+
+    updatePaymentSummary();
+
+
+    const currentUser =
+        getCurrentUser();
+
+
+    if (
+        currentUser &&
+        document.getElementById(
+            "adminName"
+        )
+    ) {
+
+        document.getElementById(
+            "adminName"
+        ).textContent =
+            currentUser.name ||
+            "Admin";
+
+    }
+
+}
+
+
+initializeFeesPage();
+
+</script>
+
+</body>
+</html>

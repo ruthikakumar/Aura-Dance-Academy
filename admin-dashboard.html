@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard |Aura Dance Academy</title>
+
+    <!-- Authentication -->
+    <script src="auth.js"></script>
+
+    <!-- Protect this page -->
+    <script>
+        requireRole("ADMIN", "admin-login.html");
+    </script>
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+    <div class="dashboard-container">
+
+        <!-- ==============================
+             SIDEBAR
+        =============================== -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div class="academy-icon">
+                    💃
+                </div>
+
+                <h2>
+                   Aura Dance Academy
+                </h2>
+
+                <p>
+                    Admin Panel
+                </p>
+
+            </div>
+
+
+            <nav class="sidebar-nav">
+
+                <a href="admin-dashboard.html" class="nav-item active">
+                    🏠
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="students.html" class="nav-item">
+                    👨‍🎓
+                    <span>Students</span>
+                </a>
+
+                <a href="dances.html" class="nav-item">
+                    💃
+                    <span>Dance Classes</span>
+                </a>
+
+                <a href="batches.html" class="nav-item">
+                    🕐
+                    <span>Batches & Schedules</span>
+                </a>
+
+                <a href="fees.html" class="nav-item">
+                    💰
+                    <span>Fees & Payments</span>
+                </a>
+
+                <a href="instructors.html" class="nav-item">
+                    👨‍🏫
+                    <span>Instructors</span>
+                </a>
+
+                <a href="attendance.html" class="nav-item">
+                    📊
+                    <span>Attendance</span>
+                </a>
+
+                <a href="announcements.html" class="nav-item">
+                    📢
+                    <span>Announcements</span>
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-footer">
+
+                <button
+                    class="logout-button"
+                    onclick="logout()"
+                >
+                    🚪 Logout
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ==============================
+             MAIN CONTENT
+        =============================== -->
+
+        <main class="main-content">
+
+
+            <!-- HEADER -->
+
+            <header class="dashboard-header">
+
+                <div>
+
+                    <h1>
+                        Admin Dashboard
+                    </h1>
+
+                    <p>
+                        Manage your dance academy
+                    </p>
+
+                </div>
+
+
+                <div class="admin-profile">
+
+                    <div class="profile-icon">
+                        👨‍💼
+                    </div>
+
+                    <div>
+
+                        <strong id="adminName">
+                            Admin
+                        </strong>
+
+                        <span>
+                            Administrator
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ==============================
+                 SUMMARY CARDS
+            =============================== -->
+
+            <section class="stats-grid">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        👨‍🎓
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Total Students
+                        </p>
+
+                        <h2 id="totalStudents">
+                            128
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        ✅
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Active Students
+                        </p>
+
+                        <h2 id="activeStudents">
+                            112
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        💰
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Pending Fees
+                        </p>
+
+                        <h2 id="pendingFees">
+                            16
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        💃
+                    </div>
+
+                    <div>
+
+                        <p>
+                            Today's Classes
+                        </p>
+
+                        <h2 id="todayClasses">
+                            8
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- ==============================
+                 DASHBOARD GRID
+            =============================== -->
+
+            <section class="dashboard-grid">
+
+
+                <!-- TODAY'S SCHEDULE -->
+
+                <div class="dashboard-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Today's Schedule
+                            </h2>
+
+                            <p>
+                                Classes scheduled for today
+                            </p>
+
+                        </div>
+
+                        <a href="batches.html">
+                            View All
+                        </a>
+
+                    </div>
+
+
+                    <div class="schedule-list">
+
+
+                        <div class="schedule-item">
+
+                            <div class="schedule-time">
+                                5:00 PM
+                            </div>
+
+                            <div class="schedule-details">
+
+                                <strong>
+                                    Bharatanatyam
+                                </strong>
+
+                                <span>
+                                    Batch B01 • Beginner
+                                </span>
+
+                            </div>
+
+                            <div class="schedule-instructor">
+                                Ananya
+                            </div>
+
+                        </div>
+
+
+                        <div class="schedule-item">
+
+                            <div class="schedule-time">
+                                6:00 PM
+                            </div>
+
+                            <div class="schedule-details">
+
+                                <strong>
+                                    Hip Hop
+                                </strong>
+
+                                <span>
+                                    Batch B02 • Intermediate
+                                </span>
+
+                            </div>
+
+                            <div class="schedule-instructor">
+                                Rahul
+                            </div>
+
+                        </div>
+
+
+                        <div class="schedule-item">
+
+                            <div class="schedule-time">
+                                7:00 PM
+                            </div>
+
+                            <div class="schedule-details">
+
+                                <strong>
+                                    Contemporary
+                                </strong>
+
+                                <span>
+                                    Batch C01 • Advanced
+                                </span>
+
+                            </div>
+
+                            <div class="schedule-instructor">
+                                Sneha
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- RECENT ADMISSIONS -->
+
+                <div class="dashboard-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h2>
+                                Recent Admissions
+                            </h2>
+
+                            <p>
+                                Recently registered students
+                            </p>
+
+                        </div>
+
+                        <a href="students.html">
+                            View All
+                        </a>
+
+                    </div>
+
+
+                    <div class="admission-list">
+
+
+                        <div class="admission-item">
+
+                            <div class="student-avatar">
+                                P
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Priya
+                                </strong>
+
+                                <span>
+                                    Bharatanatyam
+                                </span>
+
+                            </div>
+
+                            <small>
+                                Today
+                            </small>
+
+                        </div>
+
+
+                        <div class="admission-item">
+
+                            <div class="student-avatar">
+                                R
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Rahul
+                                </strong>
+
+                                <span>
+                                    Hip Hop
+                                </span>
+
+                            </div>
+
+                            <small>
+                                Yesterday
+                            </small>
+
+                        </div>
+
+
+                        <div class="admission-item">
+
+                            <div class="student-avatar">
+                                A
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Anu
+                                </strong>
+
+                                <span>
+                                    Contemporary
+                                </span>
+
+                            </div>
+
+                            <small>
+                                2 days ago
+                            </small>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- ==============================
+                 QUICK ACTIONS
+            =============================== -->
+
+            <section class="dashboard-card quick-actions-card">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <h2>
+                            Quick Actions
+                        </h2>
+
+                        <p>
+                            Frequently used management functions
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+
+                    <a href="students.html" class="quick-action">
+                        <span>👨‍🎓</span>
+                        <strong>Add Student</strong>
+                    </a>
+
+
+                    <a href="batches.html" class="quick-action">
+                        <span>🕐</span>
+                        <strong>Create Batch</strong>
+                    </a>
+
+
+                    <a href="fees.html" class="quick-action">
+                        <span>💰</span>
+                        <strong>Manage Fees</strong>
+                    </a>
+
+
+                    <a href="attendance.html" class="quick-action">
+                        <span>📊</span>
+                        <strong>Attendance</strong>
+                    </a>
+
+
+                    <a href="announcements.html" class="quick-action">
+                        <span>📢</span>
+                        <strong>Announcement</strong>
+                    </a>
+
+
+                    <a href="instructors.html" class="quick-action">
+                        <span>👨‍🏫</span>
+                        <strong>Instructors</strong>
+                    </a>
+
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+
+    <!-- ==============================
+         ADMIN DASHBOARD JAVASCRIPT
+    =============================== -->
+    <script src="admin.js"></script>
+    
+</body>
+
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | Aura Dance Academy</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="auth.js"></script>
+</head>
+
+<body>
+
+<script>
+    requireRole("STUDENT", "user-login.html");
+</script>
+
+<div class="dashboard-container">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+            <div class="academy-icon">💃</div>
+
+            <div>
+                <h2>Aura Dance</h2>
+                <span>Academy</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="student-dashboard.html" class="nav-item">
+                <span>📊</span>
+                Dashboard
+            </a>
+
+            <a href="my-profile.html" class="nav-item active">
+                <span>👤</span>
+                My Profile
+            </a>
+
+            <a href="my-schedule.html" class="nav-item">
+                <span>🕐</span>
+                My Schedule
+            </a>
+
+            <a href="my-attendance.html" class="nav-item">
+                <span>📋</span>
+                My Attendance
+            </a>
+
+            <a href="my-payments.html" class="nav-item">
+                <span>💰</span>
+                My Payments
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <button class="logout-button" onclick="logoutUser()">
+                <span>🚪</span>
+                Logout
+            </button>
+        </div>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <header class="dashboard-header">
+
+            <div>
+                <h1>My Profile</h1>
+                <p>View your personal and academy information.</p>
+            </div>
+
+            <div class="admin-profile">
+                <div class="profile-icon" id="profileIcon">S</div>
+
+                <div>
+                    <strong id="headerName">Student</strong>
+                    <span>Student</span>
+                </div>
+            </div>
+
+        </header>
+
+
+        <div class="profile-container">
+
+            <div class="profile-card">
+
+                <div class="profile-card-header">
+
+                    <div class="large-profile-icon" id="largeProfileIcon">
+                        S
+                    </div>
+
+                    <div>
+                        <h2 id="studentName">Student</h2>
+                        <p id="studentId">Student ID</p>
+                    </div>
+
+                </div>
+
+
+                <div class="profile-section">
+
+                    <h3>Personal Information</h3>
+
+                    <div class="profile-grid">
+
+                        <div class="profile-field">
+                            <label>Student ID</label>
+                            <strong id="id">-</strong>
+                        </div>
+
+                        <div class="profile-field">
+                            <label>Name</label>
+                            <strong id="name">-</strong>
+                        </div>
+
+                        <div class="profile-field">
+                            <label>Email</label>
+                            <strong id="email">-</strong>
+                        </div>
+
+                        <div class="profile-field">
+                            <label>Phone</label>
+                            <strong id="phone">-</strong>
+                        </div>
+
+                        <div class="profile-field">
+                            <label>Age</label>
+                            <strong id="age">-</strong>
+                        </div>
+
+                        <div class="profile-field">
+                            <label>Gender</label>
+                            <strong id="gender">-</strong>
+                        </div>
+
+                        <div class="profile-field">
+                            <label>Joining Date</label>
+                            <strong id="joiningDate">-</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-section">
+
+                    <h3>Dance Information</h3>
+
+                    <div class="profile-grid">
+
+                        <div class="profile-field">
+                            <label>Dance Type</label>
+                            <strong id="dance">-</strong>
+                        </div>
+
+                        <div class="profile-field">
+                            <label>Level</label>
+                            <strong id="level">-</strong>
+                        </div>
+
+                        <div class="profile-field">
+                            <label>Batch</label>
+                            <strong id="batch">-</strong>
+                        </div>
+
+                        <div class="profile-field">
+                            <label>Instructor</label>
+                            <strong id="instructor">-</strong>
+                        </div>
+
+                        <div class="profile-field">
+                            <label>Fee Status</label>
+                            <strong id="feeStatus">-</strong>
+                        </div>
+
+                        <div class="profile-field">
+                            <label>Attendance</label>
+                            <strong id="attendance">-</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+const STUDENT_KEY = "aura_students";
+
+
+function loadProfile() {
+
+    const currentUser =
+        JSON.parse(
+            localStorage.getItem("danceAcademy_currentUser")
+        );
+
+    if (!currentUser) {
+        return;
+    }
+
+
+    const students =
+        JSON.parse(
+            localStorage.getItem(STUDENT_KEY) || "[]"
+        );
+
+
+    let student =
+        students.find(
+            item => item.id === currentUser.studentId
+        );
+
+
+    if (!student && currentUser.username === "student") {
+
+        student =
+            students.find(
+                item => item.id === "STU001"
+            );
+
+    }
+
+
+    if (!student) {
+        return;
+    }
+
+
+    const name =
+        student.name || "Student";
+
+
+    document.getElementById("studentName").textContent =
+        name;
+
+    document.getElementById("headerName").textContent =
+        name;
+
+    document.getElementById("studentId").textContent =
+        student.id || "-";
+
+
+    document.getElementById("profileIcon").textContent =
+        name.charAt(0).toUpperCase();
+
+    document.getElementById("largeProfileIcon").textContent =
+        name.charAt(0).toUpperCase();
+
+
+    document.getElementById("id").textContent =
+        student.id || "-";
+
+    document.getElementById("name").textContent =
+        student.name || "-";
+
+    document.getElementById("email").textContent =
+        student.email || "-";
+
+    document.getElementById("phone").textContent =
+        student.phone || "-";
+
+    document.getElementById("age").textContent =
+        student.age || "-";
+
+    document.getElementById("gender").textContent =
+        student.gender || "-";
+
+    document.getElementById("joiningDate").textContent =
+        student.joiningDate || "-";
+
+
+    document.getElementById("dance").textContent =
+        student.dance || "-";
+
+    document.getElementById("level").textContent =
+        student.level || "-";
+
+    document.getElementById("batch").textContent =
+        student.batch || "-";
+
+    document.getElementById("instructor").textContent =
+        student.instructor || "-";
+
+    document.getElementById("feeStatus").textContent =
+        student.feeStatus || "-";
+
+    document.getElementById("attendance").textContent =
+        (student.attendance ?? 0) + "%";
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadProfile
+);
+
+</script>
+
+
+<style>
+
+.profile-container {
+    max-width: 1000px;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    overflow: hidden;
+}
+
+.profile-card-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.large-profile-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #f1f1f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.profile-card-header h2 {
+    margin: 0 0 5px;
+}
+
+.profile-card-header p {
+    margin: 0;
+    color: #777;
+}
+
+.profile-section {
+    padding: 25px 30px;
+    border-bottom: 1px solid #eee;
+}
+
+.profile-section:last-child {
+    border-bottom: none;
+}
+
+.profile-section h3 {
+    margin: 0 0 20px;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.profile-field label {
+    color: #777;
+    font-size: 14px;
+}
+
+.profile-field strong {
+    font-size: 16px;
+}
+
+@media (max-width: 700px) {
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-card-header {
+        padding: 20px;
+    }
+
+    .profile-section {
+        padding: 20px;
+    }
+
+}
+
+</style>
+
+</body>
+</html>

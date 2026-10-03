@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Login - Aura Dance Academy</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #0f766e, #0d9488, #14b8a6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-page {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 950px;
+            min-height: 560px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        /* LEFT SIDE */
+
+        .login-brand {
+            background: linear-gradient(160deg, #115e59, #0d9488);
+            color: white;
+            padding: 55px 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-brand::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            top: -80px;
+            right: -80px;
+        }
+
+        .login-brand::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.07);
+            bottom: -60px;
+            left: -50px;
+        }
+
+        .academy-logo {
+            width: 75px;
+            height: 75px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            font-weight: bold;
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-brand h1 {
+            margin: 0 0 12px;
+            font-size: 34px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-brand h2 {
+            margin: 0 0 20px;
+            font-size: 20px;
+            font-weight: 500;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-brand p {
+            max-width: 350px;
+            line-height: 1.7;
+            opacity: 0.85;
+            position: relative;
+            z-index: 1;
+        }
+
+        .dance-icon {
+            font-size: 90px;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* RIGHT SIDE */
+
+        .login-form-section {
+            padding: 55px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-form-section h2 {
+            margin: 0 0 8px;
+            font-size: 30px;
+            color: #222;
+        }
+
+        .login-subtitle {
+            margin: 0 0 35px;
+            color: #777;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: #0d9488;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.12);
+        }
+
+        .login-button {
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #0f766e, #14b8a6);
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .login-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(13, 148, 136, 0.25);
+        }
+
+        .back-home {
+            display: block;
+            text-align: center;
+            margin-top: 22px;
+            color: #0f766e;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-home:hover {
+            text-decoration: underline;
+        }
+
+        .login-error {
+            display: none;
+            margin-bottom: 18px;
+            padding: 11px 13px;
+            border-radius: 8px;
+            background: #fee2e2;
+            color: #b91c1c;
+            font-size: 14px;
+        }
+
+        @media (max-width: 750px) {
+
+            .login-container {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+
+            .login-brand {
+                padding: 35px;
+                text-align: center;
+                align-items: center;
+            }
+
+            .login-brand p {
+                display: none;
+            }
+
+            .dance-icon {
+                display: none;
+            }
+
+            .login-form-section {
+                padding: 40px 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <div class="login-container">
+
+        <!-- BRANDING -->
+
+        <div class="login-brand">
+
+            <div class="academy-logo">
+                A
+            </div>
+
+            <h1>Aura Dance</h1>
+
+            <h2>Academy</h2>
+
+            <p>
+                Dance Academy Management System
+            </p>
+
+            <div class="dance-icon">
+                🧑‍🎓
+            </div>
+
+        </div>
+
+
+        <!-- LOGIN FORM -->
+
+        <div class="login-form-section">
+
+            <h2>Student Login</h2>
+
+            <p class="login-subtitle">
+                Sign in to view your academy details
+            </p>
+
+            <div
+                id="loginError"
+                class="login-error"
+            ></div>
+
+            <form id="loginForm">
+
+                <div class="form-group">
+
+                    <label for="username">
+                        Username or Email
+                    </label>
+
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        placeholder="Enter username or email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter password"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="login-button"
+                >
+                    Login
+                </button>
+
+            </form>
+
+
+            <a
+                href="index.html"
+                class="back-home"
+            >
+                ← Back to Home
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="auth.js"></script>
+
+<script>
+document
+    .getElementById("loginForm")
+    .addEventListener("submit", function(event) {
+
+        event.preventDefault();
+
+        const username =
+            document.getElementById("username").value.trim();
+
+        const password =
+            document.getElementById("password").value;
+
+        const error =
+            document.getElementById("loginError");
+
+        error.style.display = "none";
+
+        const users = {
+            student: {
+                username: "student",
+                password: "student123",
+                role: "STUDENT",
+                name: "Ruthika",
+                studentId: "STU001"
+            }
+        };
+
+        const user = users[username];
+
+        if (
+            user &&
+            user.password === password
+        ) {
+
+            localStorage.setItem(
+                "danceAcademy_currentUser",
+                JSON.stringify(user)
+            );
+
+            window.location.href =
+                "student-dashboard.html";
+
+        } else {
+
+            error.textContent =
+                "Invalid student username or password.";
+
+            error.style.display = "block";
+        }
+
+    });
+</script>
+
+</body>
+</html>

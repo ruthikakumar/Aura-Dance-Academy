@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Instructors - Aura Dance Academy</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="academy-icon">
+                A
+            </div>
+
+            <div>
+                <h2>Aura Dance</h2>
+                <span>Academy</span>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="admin-dashboard.html" class="nav-item">
+                <span>📊</span>
+                Dashboard
+            </a>
+
+            <a href="students.html" class="nav-item">
+                <span>👥</span>
+                Students
+            </a>
+
+            <a href="dances.html" class="nav-item">
+                <span>💃</span>
+                Dance Types
+            </a>
+
+            <a href="batches.html" class="nav-item">
+                <span>🗓️</span>
+                Batches & Schedules
+            </a>
+
+            <a href="fees.html" class="nav-item">
+                <span>💰</span>
+                Fees & Payments
+            </a>
+
+            <a href="instructors.html" class="nav-item active">
+                <span>👨‍🏫</span>
+                Instructors
+            </a>
+
+            <a href="attendance.html" class="nav-item">
+                <span>✅</span>
+                Attendance
+            </a>
+
+            <a href="announcements.html" class="nav-item">
+                <span>📢</span>
+                Announcements
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutUser()"
+            >
+                <span>🚪</span>
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main-content">
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <h1>
+                    Instructors
+                </h1>
+
+                <p>
+                    Manage instructors at Aura Dance Academy.
+                </p>
+
+            </div>
+
+
+            <div class="admin-profile">
+
+                <div class="profile-icon">
+                    A
+                </div>
+
+                <div>
+
+                    <strong id="adminName">
+                        Admin
+                    </strong>
+
+                    <span>
+                        Administrator
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE ACTIONS -->
+
+        <div class="page-actions">
+
+            <div>
+
+                <h2>
+                    Instructor Management
+                </h2>
+
+                <p class="page-description">
+                    Add and manage dance instructors.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="primary-button"
+                onclick="openInstructorModal()"
+            >
+                + Add Instructor
+            </button>
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <div class="filter-card">
+
+            <div class="search-box">
+
+                <span>
+                    🔍
+                </span>
+
+                <input
+                    type="text"
+                    id="searchInstructor"
+                    placeholder="Search instructor..."
+                    oninput="filterInstructors()"
+                >
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <select
+                    id="statusFilter"
+                    onchange="filterInstructors()"
+                >
+
+                    <option value="">
+                        All Status
+                    </option>
+
+                    <option value="ACTIVE">
+                        Active
+                    </option>
+
+                    <option value="INACTIVE">
+                        Inactive
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- INSTRUCTOR TABLE -->
+
+        <div class="table-card">
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Instructor
+                            </th>
+
+                            <th>
+                                Phone
+                            </th>
+
+                            <th>
+                                Specialization
+                            </th>
+
+                            <th>
+                                Experience
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="instructorTableBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- EMPTY STATE -->
+
+        <div
+            id="emptyState"
+            class="empty-state"
+            style="display: none;"
+        >
+
+            <div class="empty-icon">
+                👨‍🏫
+            </div>
+
+            <h3>
+                No instructors found
+            </h3>
+
+            <p>
+                Add your first instructor to get started.
+            </p>
+
+            <button
+                type="button"
+                class="primary-button"
+                onclick="openInstructorModal()"
+            >
+                + Add Instructor
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- ADD / EDIT INSTRUCTOR MODAL -->
+
+<div
+    class="modal-overlay"
+    id="instructorModal"
+    style="display: none;"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="modalTitle">
+                    Add Instructor
+                </h2>
+
+                <p>
+                    Enter instructor details.
+                </p>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="modal-close"
+                onclick="closeInstructorModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="instructorForm">
+
+            <input
+                type="hidden"
+                id="instructorId"
+            >
+
+
+            <div class="form-grid">
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="instructorName">
+                        Instructor Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="instructorName"
+                        placeholder="Enter instructor name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="instructorEmail">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="instructorEmail"
+                        placeholder="Enter email"
+                    >
+
+                </div>
+
+
+                <!-- PHONE -->
+
+                <div class="form-group">
+
+                    <label for="instructorPhone">
+                        Phone
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="instructorPhone"
+                        placeholder="Enter phone number"
+                    >
+
+                </div>
+
+
+                <!-- SPECIALIZATION -->
+
+                <div class="form-group">
+
+                    <label for="instructorSpecialization">
+                        Specialization *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="instructorSpecialization"
+                        placeholder="Example: Bharatanatyam"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- EXPERIENCE -->
+
+                <div class="form-group">
+
+                    <label for="instructorExperience">
+                        Experience
+                    </label>
+
+                    <input
+                        type="number"
+                        id="instructorExperience"
+                        min="0"
+                        placeholder="Years"
+                    >
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="form-group">
+
+                    <label for="instructorStatus">
+                        Status
+                    </label>
+
+                    <select id="instructorStatus">
+
+                        <option value="ACTIVE">
+                            Active
+                        </option>
+
+                        <option value="INACTIVE">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="closeInstructorModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Save Instructor
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="auth.js"></script>
+<script src="admin.js"></script>
+
+
+<script>
+
+/* ==================================================
+   AUTHENTICATION
+   ================================================== */
+
+requireRole(
+    "ADMIN",
+    "admin-login.html"
+);
+
+
+/* ==================================================
+   STORAGE
+   ================================================== */
+
+const INSTRUCTOR_STORAGE_KEY =
+    "aura_instructors";
+
+
+/* ==================================================
+   DEFAULT INSTRUCTORS
+   ================================================== */
+
+const defaultInstructors = [
+
+    {
+        id: "INS001",
+        name: "Ananya",
+        email: "ananya@example.com",
+        phone: "9876543201",
+        specialization: "Bharatanatyam",
+        experience: 5,
+        status: "ACTIVE"
+    },
+
+    {
+        id: "INS002",
+        name: "Rahul",
+        email: "rahul@example.com",
+        phone: "9876543202",
+        specialization: "Hip Hop",
+        experience: 4,
+        status: "ACTIVE"
+    },
+
+    {
+        id: "INS003",
+        name: "Sneha",
+        email: "sneha@example.com",
+        phone: "9876543203",
+        specialization: "Contemporary",
+        experience: 6,
+        status: "ACTIVE"
+    }
+
+];
+
+
+/* ==================================================
+   GET INSTRUCTORS
+   ================================================== */
+
+function getInstructors() {
+
+    const stored =
+        localStorage.getItem(
+            INSTRUCTOR_STORAGE_KEY
+        );
+
+    if (!stored) {
+
+        localStorage.setItem(
+            INSTRUCTOR_STORAGE_KEY,
+            JSON.stringify(defaultInstructors)
+        );
+
+        return defaultInstructors;
+    }
+
+    try {
+
+        const instructors =
+            JSON.parse(stored);
+
+        return Array.isArray(instructors)
+            ? instructors
+            : [];
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+/* ==================================================
+   SAVE INSTRUCTORS
+   ================================================== */
+
+function saveInstructors(instructors) {
+
+    localStorage.setItem(
+        INSTRUCTOR_STORAGE_KEY,
+        JSON.stringify(instructors)
+    );
+
+}
+
+
+/* ==================================================
+   GENERATE INSTRUCTOR ID
+   ================================================== */
+
+function generateInstructorId() {
+
+    const instructors =
+        getInstructors();
+
+    let highestNumber = 0;
+
+    instructors.forEach(instructor => {
+
+        const match =
+            String(instructor.id)
+                .match(/^INS(\d+)$/);
+
+        if (match) {
+
+            const number =
+                Number(match[1]);
+
+            if (number > highestNumber) {
+                highestNumber = number;
+            }
+
+        }
+
+    });
+
+    return (
+        "INS" +
+        String(
+            highestNumber + 1
+        ).padStart(3, "0")
+    );
+
+}
+
+
+/* ==================================================
+   RENDER INSTRUCTORS
+   ================================================== */
+
+function renderInstructors(
+    instructors = getInstructors()
+) {
+
+    const tbody =
+        document.getElementById(
+            "instructorTableBody"
+        );
+
+    const emptyState =
+        document.getElementById(
+            "emptyState"
+        );
+
+    tbody.innerHTML = "";
+
+
+    if (!instructors.length) {
+
+        emptyState.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    emptyState.style.display =
+        "none";
+
+
+    instructors.forEach(instructor => {
+
+        const row =
+            document.createElement("tr");
+
+
+        row.innerHTML = `
+
+            <td>
+                <strong>
+                    ${escapeHTML(instructor.id)}
+                </strong>
+            </td>
+
+            <td>
+
+                <div class="student-table-info">
+
+                    <div class="table-avatar">
+                        ${escapeHTML(
+                            instructor.name
+                                .charAt(0)
+                                .toUpperCase()
+                        )}
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            ${escapeHTML(
+                                instructor.name
+                            )}
+                        </strong>
+
+                        <small>
+                            ${escapeHTML(
+                                instructor.email || "-"
+                            )}
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    instructor.phone || "-"
+                )}
+            </td>
+
+            <td>
+                ${escapeHTML(
+                    instructor.specialization || "-"
+                )}
+            </td>
+
+            <td>
+                ${
+                    instructor.experience
+                        ? escapeHTML(
+                            instructor.experience
+                        ) + " years"
+                        : "-"
+                }
+            </td>
+
+            <td>
+
+                <span class="status-badge ${
+                    instructor.status === "ACTIVE"
+                        ? "status-active"
+                        : "status-inactive"
+                }">
+
+                    ${escapeHTML(
+                        instructor.status
+                    )}
+
+                </span>
+
+            </td>
+
+            <td>
+
+                <div class="table-actions">
+
+                    <button
+                        type="button"
+                        class="edit-button"
+                        onclick="editInstructor('${instructor.id}')"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        type="button"
+                        class="delete-button"
+                        onclick="deleteInstructor('${instructor.id}')"
+                    >
+                        Delete
+                    </button>
+
+                </div>
+
+            </td>
+
+        `;
+
+        tbody.appendChild(row);
+
+    });
+
+}
+
+
+/* ==================================================
+   FILTER
+   ================================================== */
+
+function filterInstructors() {
+
+    const search =
+        document
+            .getElementById(
+                "searchInstructor"
+            )
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    const status =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+    const instructors =
+        getInstructors();
+
+
+    const filtered =
+        instructors.filter(
+            instructor => {
+
+                const matchesSearch =
+                    !search ||
+                    instructor.name
+                        .toLowerCase()
+                        .includes(search) ||
+                    (instructor.email || "")
+                        .toLowerCase()
+                        .includes(search) ||
+                    (instructor.specialization || "")
+                        .toLowerCase()
+                        .includes(search);
+
+
+                const matchesStatus =
+                    !status ||
+                    instructor.status === status;
+
+
+                return (
+                    matchesSearch &&
+                    matchesStatus
+                );
+
+            }
+        );
+
+
+    renderInstructors(filtered);
+
+}
+
+
+/* ==================================================
+   OPEN ADD MODAL
+   ================================================== */
+
+function openInstructorModal() {
+
+    document
+        .getElementById(
+            "instructorForm"
+        )
+        .reset();
+
+
+    document
+        .getElementById(
+            "instructorId"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "modalTitle"
+        )
+        .textContent =
+        "Add Instructor";
+
+
+    document
+        .getElementById(
+            "instructorModal"
+        )
+        .style.display =
+        "flex";
+
+}
+
+
+/* ==================================================
+   CLOSE MODAL
+   ================================================== */
+
+function closeInstructorModal() {
+
+    document
+        .getElementById(
+            "instructorModal"
+        )
+        .style.display =
+        "none";
+
+}
+
+
+/* ==================================================
+   EDIT INSTRUCTOR
+   ================================================== */
+
+function editInstructor(id) {
+
+    const instructors =
+        getInstructors();
+
+
+    const instructor =
+        instructors.find(
+            item => item.id === id
+        );
+
+
+    if (!instructor) {
+        return;
+    }
+
+
+    document.getElementById(
+        "instructorId"
+    ).value =
+        instructor.id;
+
+
+    document.getElementById(
+        "instructorName"
+    ).value =
+        instructor.name;
+
+
+    document.getElementById(
+        "instructorEmail"
+    ).value =
+        instructor.email || "";
+
+
+    document.getElementById(
+        "instructorPhone"
+    ).value =
+        instructor.phone || "";
+
+
+    document.getElementById(
+        "instructorSpecialization"
+    ).value =
+        instructor.specialization || "";
+
+
+    document.getElementById(
+        "instructorExperience"
+    ).value =
+        instructor.experience || "";
+
+
+    document.getElementById(
+        "instructorStatus"
+    ).value =
+        instructor.status || "ACTIVE";
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Edit Instructor";
+
+
+    document.getElementById(
+        "instructorModal"
+    ).style.display =
+        "flex";
+
+}
+
+
+/* ==================================================
+   DELETE INSTRUCTOR
+   ================================================== */
+
+function deleteInstructor(id) {
+
+    const instructors =
+        getInstructors();
+
+
+    const instructor =
+        instructors.find(
+            item => item.id === id
+        );
+
+
+    if (!instructor) {
+        return;
+    }
+
+
+    const confirmed =
+        confirm(
+            `Delete instructor "${instructor.name}"?`
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    const updated =
+        instructors.filter(
+            item => item.id !== id
+        );
+
+
+    saveInstructors(updated);
+
+    renderInstructors();
+
+}
+
+
+/* ==================================================
+   FORM SUBMIT
+   ================================================== */
+
+document
+    .getElementById(
+        "instructorForm"
+    )
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const instructors =
+                getInstructors();
+
+
+            const id =
+                document
+                    .getElementById(
+                        "instructorId"
+                    )
+                    .value;
+
+
+            const instructorData = {
+
+                id:
+                    id ||
+                    generateInstructorId(),
+
+                name:
+                    document
+                        .getElementById(
+                            "instructorName"
+                        )
+                        .value
+                        .trim(),
+
+                email:
+                    document
+                        .getElementById(
+                            "instructorEmail"
+                        )
+                        .value
+                        .trim(),
+
+                phone:
+                    document
+                        .getElementById(
+                            "instructorPhone"
+                        )
+                        .value
+                        .trim(),
+
+                specialization:
+                    document
+                        .getElementById(
+                            "instructorSpecialization"
+                        )
+                        .value
+                        .trim(),
+
+                experience:
+                    Number(
+                        document
+                            .getElementById(
+                                "instructorExperience"
+                            )
+                            .value
+                    ) || 0,
+
+                status:
+                    document
+                        .getElementById(
+                            "instructorStatus"
+                        )
+                        .value
+
+            };
+
+
+            if (!instructorData.name) {
+
+                alert(
+                    "Please enter the instructor name."
+                );
+
+                return;
+
+            }
+
+
+            if (!instructorData.specialization) {
+
+                alert(
+                    "Please enter the specialization."
+                );
+
+                return;
+
+            }
+
+
+            if (id) {
+
+                const index =
+                    instructors.findIndex(
+                        instructor =>
+                            instructor.id === id
+                    );
+
+
+                if (index !== -1) {
+
+                    instructors[index] =
+                        instructorData;
+
+                }
+
+            } else {
+
+                instructors.push(
+                    instructorData
+                );
+
+            }
+
+
+            saveInstructors(
+                instructors
+            );
+
+
+            closeInstructorModal();
+
+            renderInstructors();
+
+
+            alert(
+                id
+                    ? "Instructor updated successfully."
+                    : "Instructor added successfully."
+            );
+
+        }
+    );
+
+
+/* ==================================================
+   ESCAPE HTML
+   ================================================== */
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* ==================================================
+   LOGOUT
+   ================================================== */
+
+function logoutUser() {
+
+    logout();
+
+    window.location.href =
+        "admin-login.html";
+
+}
+
+
+/* ==================================================
+   INITIALIZE
+   ================================================== */
+
+function initializeInstructorsPage() {
+
+    renderInstructors();
+
+
+    const currentUser =
+        getCurrentUser();
+
+
+    if (
+        currentUser &&
+        document.getElementById(
+            "adminName"
+        )
+    ) {
+
+        document.getElementById(
+            "adminName"
+        ).textContent =
+            currentUser.name ||
+            "Admin";
+
+    }
+
+}
+
+
+initializeInstructorsPage();
+
+</script>
+
+</body>
+</html>

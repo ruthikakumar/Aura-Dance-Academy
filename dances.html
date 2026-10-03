@@ -1,0 +1,1569 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dance Classes | Aura Dance Academy</title>
+
+    <script src="auth.js"></script>
+
+    <script>
+        requireRole("ADMIN", "admin-login.html");
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* ==============================
+           DANCE PAGE
+        ============================== */
+
+        .dance-page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .dance-page-header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .dance-page-header p {
+            margin: 6px 0 0;
+            color: #666;
+        }
+
+        /* ==============================
+           FILTERS
+        ============================== */
+
+        .dance-filter-card {
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: grid;
+            grid-template-columns: 1fr 260px;
+            gap: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .dance-search {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .dance-search label,
+        .dance-filter-group label {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .dance-search input,
+        .dance-filter-group select {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            box-sizing: border-box;
+        }
+
+        /* ==============================
+           SECTION
+        ============================== */
+
+        .dance-section {
+            margin-bottom: 35px;
+        }
+
+        .dance-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .dance-section-header h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        .dance-section-header p {
+            margin: 5px 0 0;
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* ==============================
+           DANCE CARDS
+        ============================== */
+
+        .dance-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .dance-card {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+            border: 1px solid #eee;
+        }
+
+        .dance-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .dance-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #f2f2f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+        }
+
+        .dance-card h3 {
+            margin: 0 0 6px;
+            font-size: 19px;
+        }
+
+        .dance-category {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .dance-status {
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #e8f7ee;
+            color: #16803c;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .dance-description {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 15px 0;
+        }
+
+        .dance-card-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .dance-edit-button,
+        .dance-delete-button {
+            border: none;
+            padding: 10px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .dance-edit-button {
+            background: #eeeeee;
+        }
+
+        .dance-delete-button {
+            background: #ffe8ec;
+            color: #d92345;
+        }
+
+        /* ==============================
+           LEVELS
+        ============================== */
+
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .level-card {
+            background: white;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .level-number {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #f1f1f1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .level-card h3 {
+            margin: 0 0 8px;
+            font-size: 17px;
+        }
+
+        .level-card p {
+            margin: 0;
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* ==============================
+           EMPTY STATE
+        ============================== */
+
+        .dance-empty-state {
+            background: white;
+            border-radius: 14px;
+            padding: 50px 20px;
+            text-align: center;
+            color: #777;
+            border: 1px solid #eee;
+        }
+
+        .dance-empty-state div {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .dance-empty-state h3 {
+            color: #333;
+            margin: 0 0 6px;
+        }
+
+        /* ==============================
+           MODAL
+        ============================== */
+
+        .dance-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .dance-modal-overlay.show {
+            display: flex;
+        }
+
+        .dance-modal {
+            width: 100%;
+            max-width: 600px;
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-sizing: border-box;
+        }
+
+        .dance-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
+        .dance-modal-header h2 {
+            margin: 0;
+        }
+
+        .dance-modal-header p {
+            margin: 5px 0 0;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .dance-modal-close {
+            border: none;
+            background: transparent;
+            font-size: 27px;
+            cursor: pointer;
+        }
+
+        .dance-form-group {
+            margin-bottom: 18px;
+        }
+
+        .dance-form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 7px;
+        }
+
+        .dance-form-group input,
+        .dance-form-group select,
+        .dance-form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .dance-form-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .dance-modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        .dance-cancel-button,
+        .dance-save-button {
+            padding: 11px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .dance-cancel-button {
+            border: 1px solid #ddd;
+            background: white;
+        }
+
+        .dance-save-button {
+            border: none;
+            background: #222;
+            color: white;
+        }
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 1100px) {
+            .dance-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .level-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 700px) {
+            .dance-page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .dance-filter-card {
+                grid-template-columns: 1fr;
+            }
+
+            .dance-grid,
+            .level-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+
+        <!-- ==============================
+             SIDEBAR
+        ============================== -->
+
+        <aside class="sidebar">
+
+            <div class="sidebar-header">
+
+                <div class="academy-icon">
+                    💃
+                </div>
+
+                <h2>
+                    Aura Dance Academy
+                </h2>
+
+                <p>
+                    Admin Panel
+                </p>
+
+            </div>
+
+            <nav class="sidebar-nav">
+
+                <a href="admin-dashboard.html" class="nav-item">
+                    🏠
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="students.html" class="nav-item">
+                    👨‍🎓
+                    <span>Students</span>
+                </a>
+
+                <a href="dances.html" class="nav-item active">
+                    💃
+                    <span>Dance Classes</span>
+                </a>
+
+                <a href="batches.html" class="nav-item">
+                    🕐
+                    <span>Batches & Schedules</span>
+                </a>
+
+                <a href="fees.html" class="nav-item">
+                    💰
+                    <span>Fees & Payments</span>
+                </a>
+
+                <a href="instructors.html" class="nav-item">
+                    👨‍🏫
+                    <span>Instructors</span>
+                </a>
+
+                <a href="attendance.html" class="nav-item">
+                    📊
+                    <span>Attendance</span>
+                </a>
+
+                <a href="announcements.html" class="nav-item">
+                    📢
+                    <span>Announcements</span>
+                </a>
+
+            </nav>
+
+            <div class="sidebar-footer">
+
+                <button
+                    class="logout-button"
+                    onclick="logout()"
+                >
+                    🚪 Logout
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ==============================
+             MAIN CONTENT
+        ============================== -->
+
+        <main class="main-content">
+
+            <!-- HEADER -->
+
+            <header class="dashboard-header">
+
+                <div>
+
+                    <h1>
+                        Dance Classes
+                    </h1>
+
+                    <p>
+                        Manage dance types and student skill levels
+                    </p>
+
+                </div>
+
+                <div class="admin-profile">
+
+                    <div class="profile-icon">
+                        👨‍💼
+                    </div>
+
+                    <div>
+
+                        <strong id="adminName">
+                            Admin
+                        </strong>
+
+                        <span>
+                            Administrator
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ==============================
+                 PAGE HEADER
+            ============================== -->
+
+            <section class="dance-page-header">
+
+                <div>
+
+                    <h2>
+                        Dance Types
+                    </h2>
+
+                    <p>
+                        Manage the dance styles offered by Aura Dance Academy.
+                    </p>
+
+                </div>
+
+                <button
+                    class="primary-button"
+                    id="addDanceButton"
+                >
+                    + Add Dance Type
+                </button>
+
+            </section>
+
+
+            <!-- ==============================
+                 SEARCH & FILTER
+            ============================== -->
+
+            <section class="dance-filter-card">
+
+                <div class="dance-search">
+
+                    <label for="danceSearch">
+                        Search Dance
+                    </label>
+
+                    <input
+                        type="text"
+                        id="danceSearch"
+                        placeholder="Search dance type..."
+                    >
+
+                </div>
+
+                <div class="dance-filter-group">
+
+                    <label for="categoryFilter">
+                        Category
+                    </label>
+
+                    <select id="categoryFilter">
+
+                        <option value="ALL">
+                            All Categories
+                        </option>
+
+                        <option value="Indian Classical">
+                            Indian Classical
+                        </option>
+
+                        <option value="Folk">
+                            Folk
+                        </option>
+
+                        <option value="Western">
+                            Western
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==============================
+                 DANCE TYPES
+            ============================== -->
+
+            <section class="dance-section">
+
+                <div class="dance-section-header">
+
+                    <div>
+
+                        <h2>
+                            Available Dance Types
+                        </h2>
+
+                        <p>
+                            These dance types can be assigned to students and batches.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="dance-grid"
+                    id="danceGrid"
+                >
+                </div>
+
+                <div
+                    class="dance-empty-state"
+                    id="danceEmptyState"
+                    style="display: none;"
+                >
+
+                    <div>
+                        💃
+                    </div>
+
+                    <h3>
+                        No dance types found
+                    </h3>
+
+                    <p>
+                        Try changing your search or category filter.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ==============================
+                 LEVELS
+            ============================== -->
+
+            <section class="dance-section">
+
+                <div class="dance-section-header">
+
+                    <div>
+
+                        <h2>
+                            Dance Levels
+                        </h2>
+
+                        <p>
+                            Levels describe the student's current skill and training stage.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="level-grid">
+
+                    <div class="level-card">
+
+                        <div class="level-number">
+                            1
+                        </div>
+
+                        <h3>
+                            Beginner
+                        </h3>
+
+                        <p>
+                            For students who are new to the dance style or have basic knowledge.
+                        </p>
+
+                    </div>
+
+
+                    <div class="level-card">
+
+                        <div class="level-number">
+                            2
+                        </div>
+
+                        <h3>
+                            Intermediate
+                        </h3>
+
+                        <p>
+                            For students who understand the fundamentals and have regular practice.
+                        </p>
+
+                    </div>
+
+
+                    <div class="level-card">
+
+                        <div class="level-number">
+                            3
+                        </div>
+
+                        <h3>
+                            Advanced
+                        </h3>
+
+                        <p>
+                            For experienced students with strong technique and performance skills.
+                        </p>
+
+                    </div>
+
+
+                    <div class="level-card">
+
+                        <div class="level-number">
+                            4
+                        </div>
+
+                        <h3>
+                            Professional
+                        </h3>
+
+                        <p>
+                            For highly experienced dancers preparing for professional performances or teaching.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- ==============================
+         ADD / EDIT DANCE MODAL
+    ============================== -->
+
+    <div
+        class="dance-modal-overlay"
+        id="danceModal"
+    >
+
+        <div class="dance-modal">
+
+            <div class="dance-modal-header">
+
+                <div>
+
+                    <h2 id="danceModalTitle">
+                        Add Dance Type
+                    </h2>
+
+                    <p>
+                        Add a dance style offered by the academy.
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="dance-modal-close"
+                    id="closeDanceModal"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="danceForm">
+
+                <input
+                    type="hidden"
+                    id="danceId"
+                >
+
+
+                <div class="dance-form-group">
+
+                    <label for="danceName">
+                        Dance Type *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="danceName"
+                        placeholder="Example: Bharatanatyam"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="dance-form-group">
+
+                    <label for="danceCategory">
+                        Category *
+                    </label>
+
+                    <select
+                        id="danceCategory"
+                        required
+                    >
+
+                        <option value="">
+                            Select Category
+                        </option>
+
+                        <option value="Indian Classical">
+                            Indian Classical
+                        </option>
+
+                        <option value="Folk">
+                            Folk
+                        </option>
+
+                        <option value="Western">
+                            Western
+                        </option>
+
+                        <option value="Other">
+                            Other
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="dance-form-group">
+
+                    <label for="danceDescription">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="danceDescription"
+                        placeholder="Short description of the dance..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="dance-modal-actions">
+
+                    <button
+                        type="button"
+                        class="dance-cancel-button"
+                        id="cancelDanceButton"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="dance-save-button"
+                    >
+                        Save Dance
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==============================
+         JAVASCRIPT
+    ============================== -->
+
+    <script>
+
+        const DANCE_STORAGE_KEY = "aura_dance_types";
+
+
+        /* ==============================
+           DEFAULT DANCES
+        ============================== */
+
+        const DEFAULT_DANCES = [
+
+            {
+                id: "D001",
+                name: "Bharatanatyam",
+                category: "Indian Classical",
+                description: "A traditional Indian classical dance known for expressive movements, rhythm and storytelling."
+            },
+
+            {
+                id: "D002",
+                name: "Folk",
+                category: "Folk",
+                description: "Traditional regional dance forms that represent local culture, celebrations and community traditions."
+            },
+
+            {
+                id: "D003",
+                name: "Western",
+                category: "Western",
+                description: "Modern Western dance styles focusing on rhythm, movement, choreography and performance."
+            },
+
+            {
+                id: "D004",
+                name: "Hip Hop",
+                category: "Western",
+                description: "An energetic urban dance style involving rhythm, freestyle movement and modern choreography."
+            },
+
+            {
+                id: "D005",
+                name: "Kathak",
+                category: "Indian Classical",
+                description: "An Indian classical dance known for rhythmic footwork, spins, expressions and storytelling."
+            },
+
+            {
+                id: "D006",
+                name: "Belly Dance",
+                category: "Other",
+                description: "A dance style emphasizing controlled body movements, rhythm and expressive performance."
+            }
+
+        ];
+
+
+        /* ==============================
+           DOM ELEMENTS
+        ============================== */
+
+        const danceGrid =
+            document.getElementById("danceGrid");
+
+        const danceEmptyState =
+            document.getElementById("danceEmptyState");
+
+        const danceSearch =
+            document.getElementById("danceSearch");
+
+        const categoryFilter =
+            document.getElementById("categoryFilter");
+
+        const danceModal =
+            document.getElementById("danceModal");
+
+        const danceForm =
+            document.getElementById("danceForm");
+
+        const danceModalTitle =
+            document.getElementById("danceModalTitle");
+
+
+        /* ==============================
+           ADMIN NAME
+        ============================== */
+
+        const currentUser =
+            getCurrentUser();
+
+        if (currentUser) {
+
+            document.getElementById("adminName").textContent =
+                currentUser.name;
+
+        }
+
+
+        /* ==============================
+           GET DANCES
+        ============================== */
+
+        function getDances() {
+
+            const stored =
+                localStorage.getItem(DANCE_STORAGE_KEY);
+
+            if (!stored) {
+
+                localStorage.setItem(
+                    DANCE_STORAGE_KEY,
+                    JSON.stringify(DEFAULT_DANCES)
+                );
+
+                return [...DEFAULT_DANCES];
+            }
+
+            try {
+
+                const dances =
+                    JSON.parse(stored);
+
+                if (!Array.isArray(dances)) {
+
+                    localStorage.setItem(
+                        DANCE_STORAGE_KEY,
+                        JSON.stringify(DEFAULT_DANCES)
+                    );
+
+                    return [...DEFAULT_DANCES];
+                }
+
+                return dances;
+
+            } catch (error) {
+
+                console.error(
+                    "Error loading dances:",
+                    error
+                );
+
+                return [...DEFAULT_DANCES];
+            }
+
+        }
+
+
+        /* ==============================
+           SAVE DANCES
+        ============================== */
+
+        function saveDances(dances) {
+
+            localStorage.setItem(
+                DANCE_STORAGE_KEY,
+                JSON.stringify(dances)
+            );
+
+        }
+
+
+        /* ==============================
+           GENERATE ID
+        ============================== */
+
+        function generateDanceId() {
+
+            const dances =
+                getDances();
+
+            let number =
+                dances.length + 1;
+
+            let id =
+                `D${String(number).padStart(3, "0")}`;
+
+            while (
+                dances.some(function (dance) {
+
+                    return dance.id === id;
+
+                })
+            ) {
+
+                number++;
+
+                id =
+                    `D${String(number).padStart(3, "0")}`;
+
+            }
+
+            return id;
+        }
+
+
+        /* ==============================
+           RENDER DANCES
+        ============================== */
+
+        function renderDances() {
+
+            const dances =
+                getDances();
+
+            const searchValue =
+                danceSearch.value
+                    .trim()
+                    .toLowerCase();
+
+            const selectedCategory =
+                categoryFilter.value;
+
+
+            const filteredDances =
+                dances.filter(function (dance) {
+
+                    const matchesSearch =
+                        dance.name
+                            .toLowerCase()
+                            .includes(searchValue);
+
+
+                    const matchesCategory =
+                        selectedCategory === "ALL" ||
+                        dance.category === selectedCategory;
+
+
+                    return (
+                        matchesSearch &&
+                        matchesCategory
+                    );
+
+                });
+
+
+            danceGrid.innerHTML = "";
+
+
+            if (filteredDances.length === 0) {
+
+                danceEmptyState.style.display =
+                    "block";
+
+                return;
+            }
+
+
+            danceEmptyState.style.display =
+                "none";
+
+
+            filteredDances.forEach(function (dance) {
+
+                const card =
+                    document.createElement("div");
+
+                card.className =
+                    "dance-card";
+
+
+                card.innerHTML = `
+
+                    <div class="dance-card-top">
+
+                        <div>
+
+                            <div class="dance-icon">
+                                💃
+                            </div>
+
+                        </div>
+
+                        <span class="dance-status">
+                            ACTIVE
+                        </span>
+
+                    </div>
+
+
+                    <h3>
+                        ${escapeHTML(dance.name)}
+                    </h3>
+
+
+                    <div class="dance-category">
+                        ${escapeHTML(dance.category)}
+                    </div>
+
+
+                    <p class="dance-description">
+                        ${escapeHTML(
+                            dance.description ||
+                            "Dance style offered at Aura Dance Academy."
+                        )}
+                    </p>
+
+
+                    <div class="dance-card-actions">
+
+                        <button
+                            class="dance-edit-button"
+                            onclick="editDance('${dance.id}')"
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            class="dance-delete-button"
+                            onclick="deleteDance('${dance.id}')"
+                        >
+                            Delete
+                        </button>
+
+                    </div>
+
+                `;
+
+
+                danceGrid.appendChild(card);
+
+            });
+
+        }
+
+
+        /* ==============================
+           OPEN ADD MODAL
+        ============================== */
+
+        document
+            .getElementById("addDanceButton")
+            .addEventListener(
+                "click",
+                function () {
+
+                    openAddDanceModal();
+
+                }
+            );
+
+
+        function openAddDanceModal() {
+
+            danceForm.reset();
+
+            document.getElementById("danceId").value =
+                "";
+
+            danceModalTitle.textContent =
+                "Add Dance Type";
+
+            danceModal.classList.add("show");
+
+        }
+
+
+        /* ==============================
+           CLOSE MODAL
+        ============================== */
+
+        document
+            .getElementById("closeDanceModal")
+            .addEventListener(
+                "click",
+                closeDanceModal
+            );
+
+
+        document
+            .getElementById("cancelDanceButton")
+            .addEventListener(
+                "click",
+                closeDanceModal
+            );
+
+
+        function closeDanceModal() {
+
+            danceModal.classList.remove("show");
+
+            danceForm.reset();
+
+            document.getElementById("danceId").value =
+                "";
+
+            danceModalTitle.textContent =
+                "Add Dance Type";
+
+        }
+
+
+        /* ==============================
+           EDIT DANCE
+        ============================== */
+
+        function editDance(danceId) {
+
+            const dances =
+                getDances();
+
+            const dance =
+                dances.find(function (item) {
+
+                    return item.id === danceId;
+
+                });
+
+
+            if (!dance) {
+                return;
+            }
+
+
+            document.getElementById("danceId").value =
+                dance.id;
+
+            document.getElementById("danceName").value =
+                dance.name;
+
+            document.getElementById("danceCategory").value =
+                dance.category;
+
+            document.getElementById("danceDescription").value =
+                dance.description || "";
+
+
+            danceModalTitle.textContent =
+                "Edit Dance Type";
+
+
+            danceModal.classList.add("show");
+
+        }
+
+
+        /* ==============================
+           DELETE DANCE
+        ============================== */
+
+        function deleteDance(danceId) {
+
+            const dances =
+                getDances();
+
+            const dance =
+                dances.find(function (item) {
+
+                    return item.id === danceId;
+
+                });
+
+
+            if (!dance) {
+                return;
+            }
+
+
+            const confirmed =
+                confirm(
+                    `Are you sure you want to delete ${dance.name}?`
+                );
+
+
+            if (!confirmed) {
+                return;
+            }
+
+
+            const updatedDances =
+                dances.filter(function (item) {
+
+                    return item.id !== danceId;
+
+                });
+
+
+            saveDances(updatedDances);
+
+            renderDances();
+
+        }
+
+
+        /* ==============================
+           ADD / UPDATE DANCE
+        ============================== */
+
+        danceForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const dances =
+                    getDances();
+
+
+                const danceId =
+                    document
+                        .getElementById("danceId")
+                        .value;
+
+
+                const danceName =
+                    document
+                        .getElementById("danceName")
+                        .value
+                        .trim();
+
+
+                const danceCategory =
+                    document
+                        .getElementById("danceCategory")
+                        .value;
+
+
+                const danceDescription =
+                    document
+                        .getElementById("danceDescription")
+                        .value
+                        .trim();
+
+
+                if (!danceName || !danceCategory) {
+
+                    alert(
+                        "Please enter the dance type and category."
+                    );
+
+                    return;
+                }
+
+
+                /* Check duplicate dance name */
+
+                const duplicate =
+                    dances.some(function (dance) {
+
+                        return (
+                            dance.name.toLowerCase() ===
+                                danceName.toLowerCase() &&
+                            dance.id !== danceId
+                        );
+
+                    });
+
+
+                if (duplicate) {
+
+                    alert(
+                        "This dance type already exists."
+                    );
+
+                    return;
+                }
+
+
+                const danceData = {
+
+                    id:
+                        danceId ||
+                        generateDanceId(),
+
+                    name:
+                        danceName,
+
+                    category:
+                        danceCategory,
+
+                    description:
+                        danceDescription
+
+                };
+
+
+                /* EDIT */
+
+                if (danceId) {
+
+                    const index =
+                        dances.findIndex(
+                            function (dance) {
+
+                                return dance.id === danceId;
+
+                            }
+                        );
+
+
+                    if (index !== -1) {
+
+                        dances[index] =
+                            danceData;
+
+                    }
+
+                }
+
+
+                /* ADD */
+
+                else {
+
+                    dances.push(
+                        danceData
+                    );
+
+                }
+
+
+                saveDances(dances);
+
+                closeDanceModal();
+
+                renderDances();
+
+            }
+        );
+
+
+        /* ==============================
+           SEARCH / FILTER
+        ============================== */
+
+        danceSearch.addEventListener(
+            "input",
+            renderDances
+        );
+
+
+        categoryFilter.addEventListener(
+            "change",
+            renderDances
+        );
+
+
+        /* ==============================
+           ESCAPE HTML
+        ============================== */
+
+        function escapeHTML(value) {
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+        }
+
+
+        /* ==============================
+           INITIALIZE
+        ============================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                renderDances();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>

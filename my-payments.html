@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Payments | Aura Dance Academy</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="auth.js"></script>
+</head>
+
+<body>
+
+<script>
+    requireRole("STUDENT", "user-login.html");
+</script>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="academy-icon">
+                💃
+            </div>
+
+            <div>
+                <h2>Aura Dance</h2>
+                <span>Academy</span>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="student-dashboard.html" class="nav-item">
+                <span>📊</span>
+                Dashboard
+            </a>
+
+            <a href="my-profile.html" class="nav-item">
+                <span>👤</span>
+                My Profile
+            </a>
+
+            <a href="my-schedule.html" class="nav-item">
+                <span>🕐</span>
+                My Schedule
+            </a>
+
+            <a href="my-attendance.html" class="nav-item">
+                <span>📋</span>
+                My Attendance
+            </a>
+
+            <a href="my-payments.html" class="nav-item active">
+                <span>💰</span>
+                My Payments
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-footer">
+
+            <button
+                class="logout-button"
+                onclick="logoutUser()"
+            >
+                <span>🚪</span>
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <h1>
+                    My Payments
+                </h1>
+
+                <p>
+                    View your fee and payment information.
+                </p>
+
+            </div>
+
+
+            <div class="admin-profile">
+
+                <div
+                    class="profile-icon"
+                    id="profileIcon"
+                >
+                    S
+                </div>
+
+                <div>
+
+                    <strong id="studentName">
+                        Student
+                    </strong>
+
+                    <span>
+                        Student
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAYMENT SUMMARY -->
+        <section class="payment-summary">
+
+            <div class="payment-card">
+
+                <div class="payment-icon">
+                    💰
+                </div>
+
+                <div>
+
+                    <strong id="totalPaid">
+                        ₹0
+                    </strong>
+
+                    <span>
+                        Total Paid
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="payment-card">
+
+                <div class="payment-icon">
+                    ⏳
+                </div>
+
+                <div>
+
+                    <strong id="pendingAmount">
+                        ₹0
+                    </strong>
+
+                    <span>
+                        Pending Amount
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="payment-card">
+
+                <div class="payment-icon">
+                    📅
+                </div>
+
+                <div>
+
+                    <strong id="paymentStatus">
+                        -
+                    </strong>
+
+                    <span>
+                        Current Status
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="payment-card">
+
+                <div class="payment-icon">
+                    🎓
+                </div>
+
+                <div>
+
+                    <strong id="studentBatch">
+                        -
+                    </strong>
+
+                    <span>
+                        Batch
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PAYMENT DETAILS -->
+        <section class="dashboard-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Fee Information
+                    </h2>
+
+                    <p>
+                        Your current academy fee status.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="fee-details">
+
+                <div class="fee-row">
+
+                    <span>
+                        Student Name
+                    </span>
+
+                    <strong id="infoName">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="fee-row">
+
+                    <span>
+                        Student ID
+                    </span>
+
+                    <strong id="studentId">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="fee-row">
+
+                    <span>
+                        Dance Type
+                    </span>
+
+                    <strong id="danceType">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="fee-row">
+
+                    <span>
+                        Fee Status
+                    </span>
+
+                    <strong id="infoStatus">
+                        -
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PAYMENT HISTORY -->
+        <section class="dashboard-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Payment History
+                    </h2>
+
+                    <p>
+                        Your recorded fee payments.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table class="payment-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Date</th>
+                            <th>Month</th>
+                            <th>Amount</th>
+                            <th>Payment Method</th>
+                            <th>Status</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="paymentTableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<script>
+
+const STUDENT_KEY = "aura_students";
+const PAYMENT_KEY = "aura_payments";
+
+
+function getCurrentStudent() {
+
+    const currentUser =
+        JSON.parse(
+            localStorage.getItem(
+                "danceAcademy_currentUser"
+            )
+        );
+
+
+    if (!currentUser) {
+        return null;
+    }
+
+
+    const students =
+        JSON.parse(
+            localStorage.getItem(
+                STUDENT_KEY
+            ) || "[]"
+        );
+
+
+    let student =
+        students.find(
+            item =>
+                item.id === currentUser.studentId
+        );
+
+
+    if (
+        !student &&
+        currentUser.username === "student"
+    ) {
+
+        student =
+            students.find(
+                item =>
+                    item.id === "STU001"
+            );
+
+    }
+
+
+    return student || null;
+
+}
+
+
+function loadPayments() {
+
+    const student =
+        getCurrentStudent();
+
+
+    if (!student) {
+
+        showEmpty();
+
+        return;
+
+    }
+
+
+    const name =
+        student.name || "Student";
+
+
+    document.getElementById(
+        "studentName"
+    ).textContent =
+        name;
+
+
+    document.getElementById(
+        "profileIcon"
+    ).textContent =
+        name
+            .charAt(0)
+            .toUpperCase();
+
+
+    document.getElementById(
+        "infoName"
+    ).textContent =
+        name;
+
+
+    document.getElementById(
+        "studentId"
+    ).textContent =
+        student.id || "-";
+
+
+    document.getElementById(
+        "danceType"
+    ).textContent =
+        student.dance || "-";
+
+
+    document.getElementById(
+        "studentBatch"
+    ).textContent =
+        student.batch || "-";
+
+
+    const status =
+        student.feeStatus || "PENDING";
+
+
+    document.getElementById(
+        "paymentStatus"
+    ).textContent =
+        status;
+
+
+    document.getElementById(
+        "infoStatus"
+    ).textContent =
+        status;
+
+
+    const payments =
+        JSON.parse(
+            localStorage.getItem(
+                PAYMENT_KEY
+            ) || "[]"
+        );
+
+
+    /*
+       Match payment records to this student.
+       The Fees page may store the student
+       using studentId or email.
+    */
+
+    const studentPayments =
+        payments.filter(
+            payment =>
+                payment.studentId === student.id ||
+                payment.email === student.email
+        );
+
+
+    let totalPaid = 0;
+    let totalAmount = 0;
+
+
+    studentPayments.forEach(
+        payment => {
+
+            totalPaid +=
+                Number(
+                    payment.paidAmount ||
+                    payment.amountPaid ||
+                    0
+                );
+
+            totalAmount +=
+                Number(
+                    payment.feeAmount ||
+                    payment.totalAmount ||
+                    payment.amount ||
+                    0
+                );
+
+        }
+    );
+
+
+    /*
+       If there are no payment records,
+       use the student's fee status for
+       the dashboard summary.
+    */
+
+    if (studentPayments.length === 0) {
+
+        if (status === "PAID") {
+
+            totalPaid = 0;
+
+            document.getElementById(
+                "pendingAmount"
+            ).textContent =
+                "₹0";
+
+        } else {
+
+            document.getElementById(
+                "pendingAmount"
+            ).textContent =
+                "Pending";
+
+        }
+
+    } else {
+
+        const pending =
+            Math.max(
+                totalAmount - totalPaid,
+                0
+            );
+
+
+        document.getElementById(
+            "pendingAmount"
+        ).textContent =
+            "₹" + pending.toLocaleString("en-IN");
+
+    }
+
+
+    document.getElementById(
+        "totalPaid"
+    ).textContent =
+        "₹" + totalPaid.toLocaleString("en-IN");
+
+
+    renderPaymentHistory(
+        studentPayments
+    );
+
+}
+
+
+function renderPaymentHistory(payments) {
+
+    const tbody =
+        document.getElementById(
+            "paymentTableBody"
+        );
+
+
+    if (payments.length === 0) {
+
+        tbody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="5"
+                    class="empty-payment"
+                >
+                    No payment records available.
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    tbody.innerHTML =
+        payments
+            .sort(
+                (a, b) =>
+                    new Date(
+                        b.paymentDate || b.date || 0
+                    ) -
+                    new Date(
+                        a.paymentDate || a.date || 0
+                    )
+            )
+            .map(
+                payment => {
+
+                    const amount =
+                        Number(
+                            payment.paidAmount ||
+                            payment.amountPaid ||
+                            payment.amount ||
+                            0
+                        );
+
+
+                    const date =
+                        payment.paymentDate ||
+                        payment.date ||
+                        "-";
+
+
+                    const month =
+                        payment.month ||
+                        "-";
+
+
+                    const method =
+                        payment.paymentMethod ||
+                        payment.method ||
+                        "-";
+
+
+                    return `
+
+                        <tr>
+
+                            <td>
+                                ${escapeHtml(date)}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(month)}
+                            </td>
+
+                            <td>
+                                ₹${amount.toLocaleString("en-IN")}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(method)}
+                            </td>
+
+                            <td>
+
+                                <span class="payment-status paid">
+                                    PAID
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+}
+
+
+function showEmpty() {
+
+    document.getElementById(
+        "paymentTableBody"
+    ).innerHTML = `
+
+        <tr>
+
+            <td
+                colspan="5"
+                class="empty-payment"
+            >
+                Student information not found.
+            </td>
+
+        </tr>
+
+    `;
+
+}
+
+
+function escapeHtml(value) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        value || "";
+
+    return div.innerHTML;
+
+}
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    loadPayments
+);
+
+</script>
+
+
+<style>
+
+.payment-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.payment-card {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.payment-icon {
+    font-size: 28px;
+}
+
+.payment-card strong {
+    display: block;
+    font-size: 20px;
+}
+
+.payment-card span {
+    display: block;
+    color: #777;
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.fee-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.fee-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.fee-row:last-child {
+    border-bottom: none;
+}
+
+.fee-row span {
+    color: #777;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.payment-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.payment-table th,
+.payment-table td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.payment-table th {
+    background: #f8f8f8;
+    font-weight: 600;
+}
+
+.payment-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.payment-status.paid {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.empty-payment {
+    text-align: center !important;
+    color: #777;
+    padding: 30px !important;
+}
+
+@media (max-width: 900px) {
+
+    .payment-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .payment-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .fee-row {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+}
+
+</style>
+
+</body>
+</html>

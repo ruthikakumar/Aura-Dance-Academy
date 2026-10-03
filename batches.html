@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Batches & Schedules - Aura Dance Academy</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="academy-icon">A</div>
+
+            <div>
+                <h2>Aura Dance</h2>
+                <span>Academy</span>
+            </div>
+
+        </div>
+
+        <nav class="sidebar-menu">
+
+            <a href="admin-dashboard.html" class="nav-item">
+                <span>🏠</span>
+                Dashboard
+            </a>
+
+            <a href="students.html" class="nav-item">
+                <span>👥</span>
+                Students
+            </a>
+
+            <a href="dances.html" class="nav-item">
+                <span>💃</span>
+                Dance Classes
+            </a>
+
+            <a href="batches.html" class="nav-item active">
+                <span>🕐</span>
+                Batches &amp; Schedules
+            </a>
+
+            <a href="fees.html" class="nav-item">
+                <span>💰</span>
+                Fees &amp; Payments
+            </a>
+
+            <a href="instructors.html" class="nav-item">
+                <span>👨‍🏫</span>
+                Instructors
+            </a>
+
+            <a href="attendance.html" class="nav-item">
+                <span>📋</span>
+                Attendance
+            </a>
+
+            <a href="announcements.html" class="nav-item">
+                <span>📢</span>
+                Announcements
+            </a>
+
+            <button
+                type="button"
+                class="logout-button"
+                onclick="logoutUser()"
+            >
+                <span>🚪</span>
+                Logout
+            </button>
+
+        </nav>
+
+    </aside>
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+        <header class="dashboard-header">
+
+            <div>
+
+                <h1>Batches & Schedules</h1>
+
+                <p>
+                    Manage dance batches and class schedules.
+                </p>
+
+            </div>
+
+
+            <div class="admin-profile">
+
+                <div class="profile-icon">
+                    A
+                </div>
+
+                <div>
+
+                    <strong id="adminName">
+                        Admin
+                    </strong>
+
+                    <span>
+                        Administrator
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- PAGE ACTION -->
+
+        <div class="page-actions">
+
+            <div>
+
+                <h2>Dance Batches</h2>
+
+                <p class="page-description">
+                    Create and manage class batches for Aura Dance Academy.
+                </p>
+
+            </div>
+
+
+            <button
+                class="primary-button"
+                onclick="openBatchModal()"
+            >
+                + Add Batch
+            </button>
+
+        </div>
+
+
+        <!-- FILTERS -->
+
+        <div class="filter-card">
+
+            <div class="search-box">
+
+                <span>🔍</span>
+
+                <input
+                    type="text"
+                    id="searchBatch"
+                    placeholder="Search batch, dance or instructor..."
+                    oninput="filterBatches()"
+                >
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <select
+                    id="danceFilter"
+                    onchange="filterBatches()"
+                >
+                    <option value="">
+                        All Dance Types
+                    </option>
+                </select>
+
+
+                <select
+                    id="levelFilter"
+                    onchange="filterBatches()"
+                >
+
+                    <option value="">
+                        All Levels
+                    </option>
+
+                    <option value="Beginner">
+                        Beginner
+                    </option>
+
+                    <option value="Intermediate">
+                        Intermediate
+                    </option>
+
+                    <option value="Advanced">
+                        Advanced
+                    </option>
+
+                    <option value="Professional">
+                        Professional
+                    </option>
+
+                </select>
+
+
+                <select
+                    id="statusFilter"
+                    onchange="filterBatches()"
+                >
+
+                    <option value="">
+                        All Status
+                    </option>
+
+                    <option value="ACTIVE">
+                        Active
+                    </option>
+
+                    <option value="INACTIVE">
+                        Inactive
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- BATCH GRID -->
+
+        <div
+            id="batchGrid"
+            class="batch-grid"
+        ></div>
+
+
+        <!-- EMPTY -->
+
+        <div
+            id="emptyState"
+            class="empty-state"
+            style="display:none;"
+        >
+
+            <div class="empty-icon">
+                🗓️
+            </div>
+
+            <h3>
+                No batches found
+            </h3>
+
+            <p>
+                Create your first batch to start managing class schedules.
+            </p>
+
+            <button
+                class="primary-button"
+                onclick="openBatchModal()"
+            >
+                + Add Batch
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- MODAL -->
+
+<div
+    class="modal-overlay"
+    id="batchModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="modalTitle">
+                    Add Batch
+                </h2>
+
+                <p>
+                    Create a new dance batch.
+                </p>
+
+            </div>
+
+
+            <button
+                class="modal-close"
+                type="button"
+                onclick="closeBatchModal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <form id="batchForm">
+
+            <input
+                type="hidden"
+                id="batchId"
+            >
+
+
+            <div class="form-grid">
+
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="batchName">
+                        Batch Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="batchName"
+                        placeholder="Example: Bharatanatyam B01"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- DANCE -->
+
+                <div class="form-group">
+
+                    <label for="batchDance">
+                        Dance Type *
+                    </label>
+
+                    <select
+                        id="batchDance"
+                        required
+                    >
+
+                        <option value="">
+                            Select Dance Type
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- LEVEL -->
+
+                <div class="form-group">
+
+                    <label for="batchLevel">
+                        Level *
+                    </label>
+
+                    <select
+                        id="batchLevel"
+                        required
+                    >
+
+                        <option value="">
+                            Select Level
+                        </option>
+
+                        <option value="Beginner">
+                            Beginner
+                        </option>
+
+                        <option value="Intermediate">
+                            Intermediate
+                        </option>
+
+                        <option value="Advanced">
+                            Advanced
+                        </option>
+
+                        <option value="Professional">
+                            Professional
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- INSTRUCTOR -->
+
+                <div class="form-group">
+
+                    <label for="batchInstructor">
+                        Instructor *
+                    </label>
+
+                    <select
+                        id="batchInstructor"
+                        required
+                    >
+
+                        <option value="">
+                            Select Instructor
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- DAYS -->
+
+                <div class="form-group">
+
+                    <label for="batchDays">
+                        Class Days *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="batchDays"
+                        placeholder="Monday, Wednesday, Friday"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- START -->
+
+                <div class="form-group">
+
+                    <label for="startTime">
+                        Start Time *
+                    </label>
+
+                    <input
+                        type="time"
+                        id="startTime"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- END -->
+
+                <div class="form-group">
+
+                    <label for="endTime">
+                        End Time *
+                    </label>
+
+                    <input
+                        type="time"
+                        id="endTime"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- ROOM -->
+
+                <div class="form-group">
+
+                    <label for="batchRoom">
+                        Room
+                    </label>
+
+                    <input
+                        type="text"
+                        id="batchRoom"
+                        placeholder="Example: Studio 1"
+                    >
+
+                </div>
+
+
+                <!-- CAPACITY -->
+
+                <div class="form-group">
+
+                    <label for="batchCapacity">
+                        Maximum Students
+                    </label>
+
+                    <input
+                        type="number"
+                        id="batchCapacity"
+                        min="1"
+                        value="20"
+                    >
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="form-group">
+
+                    <label for="batchStatus">
+                        Status
+                    </label>
+
+                    <select id="batchStatus">
+
+                        <option value="ACTIVE">
+                            Active
+                        </option>
+
+                        <option value="INACTIVE">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="closeBatchModal()"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Save Batch
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="auth.js"></script>
+<script src="admin.js"></script>
+
+
+<script>
+
+/* ==================================================
+   AUTHENTICATION
+   ================================================== */
+
+requireRole(
+    "ADMIN",
+    "admin-login.html"
+);
+
+
+/* ==================================================
+   STORAGE
+   ================================================== */
+
+const BATCH_STORAGE_KEY = "aura_batches";
+
+
+/* ==================================================
+   VALID DANCES
+   ================================================== */
+
+const VALID_DANCES = [
+
+    "Bharatanatyam",
+    "Folk",
+    "Western",
+    "Hip Hop",
+    "Kathak",
+    "Belly Dance"
+
+];
+
+
+/* ==================================================
+   DEFAULT BATCHES
+   ================================================== */
+
+const defaultBatches = [
+
+    {
+        id: "B01",
+        name: "Bharatanatyam Morning",
+        dance: "Bharatanatyam",
+        level: "Beginner",
+        instructor: "Ananya",
+        days: "Monday, Wednesday, Friday",
+        startTime: "08:00",
+        endTime: "09:00",
+        room: "Studio 1",
+        capacity: 20,
+        status: "ACTIVE"
+    },
+
+    {
+        id: "B02",
+        name: "Hip Hop Evening",
+        dance: "Hip Hop",
+        level: "Intermediate",
+        instructor: "Rahul",
+        days: "Tuesday, Thursday",
+        startTime: "18:00",
+        endTime: "19:00",
+        room: "Studio 2",
+        capacity: 20,
+        status: "ACTIVE"
+    },
+
+    {
+        id: "B03",
+        name: "Kathak Weekend",
+        dance: "Kathak",
+        level: "Advanced",
+        instructor: "Sneha",
+        days: "Saturday, Sunday",
+        startTime: "10:00",
+        endTime: "11:00",
+        room: "Studio 1",
+        capacity: 15,
+        status: "ACTIVE"
+    }
+
+];
+/* ==================================================
+   GET BATCHES
+   ================================================== */
+
+function getBatches() {
+
+    const stored =
+        localStorage.getItem(
+            BATCH_STORAGE_KEY
+        );
+
+    if (!stored) {
+
+        localStorage.setItem(
+            BATCH_STORAGE_KEY,
+            JSON.stringify(defaultBatches)
+        );
+
+        return [...defaultBatches];
+
+    }
+
+    try {
+
+        const batches =
+            JSON.parse(stored);
+
+        if (!Array.isArray(batches)) {
+
+            return [...defaultBatches];
+
+        }
+
+        return batches;
+
+    } catch (error) {
+
+        console.error(
+            "Unable to read batches:",
+            error
+        );
+
+        return [...defaultBatches];
+
+    }
+
+}
+
+
+/* ==================================================
+   SAVE BATCHES
+   ================================================== */
+
+function saveBatches(batches) {
+
+    localStorage.setItem(
+        BATCH_STORAGE_KEY,
+        JSON.stringify(batches)
+    );
+
+}
+
+
+/* ==================================================
+   GENERATE ID
+   ================================================== */
+
+function generateBatchId() {
+
+    const batches =
+        getBatches();
+
+    let number = 1;
+
+    while (
+        batches.some(
+            batch =>
+                batch.id ===
+                "B" +
+                String(number).padStart(2, "0")
+        )
+    ) {
+
+        number++;
+
+    }
+
+    return (
+        "B" +
+        String(number).padStart(2, "0")
+    );
+
+}
+
+
+/* ==================================================
+   LOAD DANCE TYPES
+   ================================================== */
+
+function loadDanceTypes() {
+
+    const danceSelect =
+        document.getElementById("batchDance");
+
+    const filterSelect =
+        document.getElementById("danceFilter");
+
+    const danceTypes = [
+        "Bharatanatyam",
+        "Folk",
+        "Western",
+        "Hip Hop",
+        "Kathak",
+        "Belly Dance"
+    ];
+
+    danceSelect.innerHTML =
+        '<option value="">Select Dance Type</option>';
+
+    filterSelect.innerHTML =
+        '<option value="">All Dance Types</option>';
+
+    danceTypes.forEach(function(name) {
+
+        const option =
+            document.createElement("option");
+
+        option.value = name;
+        option.textContent = name;
+
+        danceSelect.appendChild(option);
+
+
+        const filterOption =
+            document.createElement("option");
+
+        filterOption.value = name;
+        filterOption.textContent = name;
+
+        filterSelect.appendChild(filterOption);
+
+    });
+
+}
+
+
+/* ==================================================
+   LOAD INSTRUCTORS
+   ================================================== */
+
+function loadInstructors() {
+
+    const select =
+        document.getElementById(
+            "batchInstructor"
+        );
+
+
+    select.innerHTML =
+        '<option value="">Select Instructor</option>';
+
+
+    const stored =
+        localStorage.getItem(
+            "aura_instructors"
+        );
+
+
+    if (!stored) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const instructors =
+            JSON.parse(stored);
+
+
+        if (!Array.isArray(instructors)) {
+
+            return;
+
+        }
+
+
+        instructors
+            .filter(
+                instructor =>
+                    instructor.status === "ACTIVE"
+            )
+            .forEach(
+                instructor => {
+
+                    const option =
+                        document.createElement(
+                            "option"
+                        );
+
+                    option.value =
+                        instructor.name;
+
+                    option.textContent =
+                        instructor.name;
+
+                    select.appendChild(
+                        option
+                    );
+
+                }
+            );
+
+    } catch (error) {
+
+        console.error(
+            "Unable to load instructors:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   FORMAT TIME
+   ================================================== */
+
+function formatTime(time) {
+
+    if (!time) {
+
+        return "";
+
+    }
+
+
+    const parts =
+        time.split(":");
+
+
+    const date =
+        new Date();
+
+
+    date.setHours(
+        Number(parts[0]),
+        Number(parts[1])
+    );
+
+
+    return date.toLocaleTimeString(
+        [],
+        {
+            hour: "numeric",
+            minute: "2-digit"
+        }
+    );
+
+}
+
+
+/* ==================================================
+   ESCAPE HTML
+   ================================================== */
+
+function escapeHTML(value) {
+
+    if (
+        value === null ||
+        value === undefined
+    ) {
+
+        return "";
+
+    }
+
+
+    return String(value)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+/* ==================================================
+   RENDER BATCHES
+   ================================================== */
+
+function renderBatches(
+    batches = getBatches()
+) {
+
+    const grid =
+        document.getElementById(
+            "batchGrid"
+        );
+
+    const emptyState =
+        document.getElementById(
+            "emptyState"
+        );
+
+
+    grid.innerHTML = "";
+
+
+    if (!batches.length) {
+
+        emptyState.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    emptyState.style.display =
+        "none";
+
+
+    batches.forEach(batch => {
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "batch-card";
+
+
+        card.innerHTML = `
+
+            <div class="batch-card-header">
+
+                <div>
+
+                    <span class="batch-id">
+                        ${escapeHTML(batch.id)}
+                    </span>
+
+                    <h3>
+                        ${escapeHTML(batch.name)}
+                    </h3>
+
+                </div>
+
+
+                <span class="status-badge ${
+                    batch.status === "ACTIVE"
+                        ? "status-active"
+                        : "status-inactive"
+                }">
+
+                    ${escapeHTML(batch.status)}
+
+                </span>
+
+            </div>
+
+
+            <div class="batch-info">
+
+
+                <div class="batch-info-item">
+
+                    <span class="batch-info-icon">
+                        💃
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Dance
+                        </small>
+
+                        <strong>
+                            ${escapeHTML(batch.dance)}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="batch-info-item">
+
+                    <span class="batch-info-icon">
+                        📈
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Level
+                        </small>
+
+                        <strong>
+                            ${escapeHTML(batch.level)}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="batch-info-item">
+
+                    <span class="batch-info-icon">
+                        👨‍🏫
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Instructor
+                        </small>
+
+                        <strong>
+                            ${escapeHTML(batch.instructor)}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="batch-info-item">
+
+                    <span class="batch-info-icon">
+                        📅
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Days
+                        </small>
+
+                        <strong>
+                            ${escapeHTML(batch.days)}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="batch-info-item">
+
+                    <span class="batch-info-icon">
+                        🕐
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Time
+                        </small>
+
+                        <strong>
+                            ${formatTime(batch.startTime)}
+                            -
+                            ${formatTime(batch.endTime)}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="batch-info-item">
+
+                    <span class="batch-info-icon">
+                        🏠
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Room
+                        </small>
+
+                        <strong>
+                            ${escapeHTML(
+                                batch.room ||
+                                "Not assigned"
+                            )}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="batch-info-item">
+
+                    <span class="batch-info-icon">
+                        👥
+                    </span>
+
+                    <div>
+
+                        <small>
+                            Capacity
+                        </small>
+
+                        <strong>
+                            ${batch.capacity}
+                            students
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="batch-card-actions">
+
+                <button
+                    type="button"
+                    class="edit-button"
+                    onclick="editBatch('${batch.id}')"
+                >
+                    Edit
+                </button>
+
+
+                <button
+                    type="button"
+                    class="delete-button"
+                    onclick="deleteBatch('${batch.id}')"
+                >
+                    Delete
+                </button>
+
+            </div>
+
+        `;
+
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+/* ==================================================
+   FILTER
+   ================================================== */
+
+function filterBatches() {
+
+    const search =
+        document
+            .getElementById(
+                "searchBatch"
+            )
+            .value
+            .toLowerCase()
+            .trim();
+
+
+    const dance =
+        document.getElementById(
+            "danceFilter"
+        ).value;
+
+
+    const level =
+        document.getElementById(
+            "levelFilter"
+        ).value;
+
+
+    const status =
+        document.getElementById(
+            "statusFilter"
+        ).value;
+
+
+    const batches =
+        getBatches();
+
+
+    const filtered =
+        batches.filter(batch => {
+
+            const matchesSearch =
+                !search ||
+
+                String(batch.id)
+                    .toLowerCase()
+                    .includes(search) ||
+
+                String(batch.name)
+                    .toLowerCase()
+                    .includes(search) ||
+
+                String(batch.dance)
+                    .toLowerCase()
+                    .includes(search) ||
+
+                String(batch.instructor)
+                    .toLowerCase()
+                    .includes(search);
+
+
+            const matchesDance =
+                !dance ||
+                batch.dance === dance;
+
+
+            const matchesLevel =
+                !level ||
+                batch.level === level;
+
+
+            const matchesStatus =
+                !status ||
+                batch.status === status;
+
+
+            return (
+                matchesSearch &&
+                matchesDance &&
+                matchesLevel &&
+                matchesStatus
+            );
+
+        });
+
+
+    renderBatches(filtered);
+
+}
+
+
+/* ==================================================
+   OPEN ADD MODAL
+   ================================================== */
+
+function openBatchModal() {
+
+    const form =
+        document.getElementById(
+            "batchForm"
+        );
+
+
+    form.reset();
+
+
+    document.getElementById(
+        "batchId"
+    ).value = "";
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Add Batch";
+
+
+    loadDanceTypes();
+    loadInstructors();
+
+
+    document.getElementById(
+        "batchModal"
+    ).classList.add("active");
+
+}
+
+
+/* ==================================================
+   CLOSE MODAL
+   ================================================== */
+
+function closeBatchModal() {
+
+    document.getElementById(
+        "batchModal"
+    ).classList.remove("active");
+
+}
+
+
+/* ==================================================
+   EDIT
+   ================================================== */
+
+function editBatch(id) {
+
+    const batches =
+        getBatches();
+
+
+    const batch =
+        batches.find(
+            item =>
+                item.id === id
+        );
+
+
+    if (!batch) {
+
+        alert("Batch not found.");
+
+        return;
+
+    }
+
+
+    loadDanceTypes();
+    loadInstructors();
+
+
+    document.getElementById(
+        "batchId"
+    ).value =
+        batch.id;
+
+
+    document.getElementById(
+        "batchName"
+    ).value =
+        batch.name;
+
+
+    document.getElementById(
+        "batchDance"
+    ).value =
+        batch.dance;
+
+
+    document.getElementById(
+        "batchLevel"
+    ).value =
+        batch.level;
+
+
+    document.getElementById(
+        "batchInstructor"
+    ).value =
+        batch.instructor;
+
+
+    document.getElementById(
+        "batchDays"
+    ).value =
+        batch.days;
+
+
+    document.getElementById(
+        "startTime"
+    ).value =
+        batch.startTime;
+
+
+    document.getElementById(
+        "endTime"
+    ).value =
+        batch.endTime;
+
+
+    document.getElementById(
+        "batchRoom"
+    ).value =
+        batch.room || "";
+
+
+    document.getElementById(
+        "batchCapacity"
+    ).value =
+        batch.capacity || 20;
+
+
+    document.getElementById(
+        "batchStatus"
+    ).value =
+        batch.status;
+
+
+    document.getElementById(
+        "modalTitle"
+    ).textContent =
+        "Edit Batch";
+
+
+    document.getElementById(
+        "batchModal"
+    ).classList.add("active");
+
+}
+
+
+/* ==================================================
+   DELETE
+   ================================================== */
+
+function deleteBatch(id) {
+
+    const batches =
+        getBatches();
+
+
+    const batch =
+        batches.find(
+            item =>
+                item.id === id
+        );
+
+
+    if (!batch) {
+
+        return;
+
+    }
+
+
+    if (
+        !confirm(
+            `Are you sure you want to delete "${batch.name}"?`
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    const updated =
+        batches.filter(
+            item =>
+                item.id !== id
+        );
+
+
+    saveBatches(updated);
+
+    renderBatches();
+
+}
+
+
+/* ==================================================
+   FORM SUBMIT
+   ================================================== */
+
+document
+    .getElementById("batchForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const batches =
+                getBatches();
+
+
+            const id =
+                document.getElementById(
+                    "batchId"
+                ).value;
+
+
+            const name =
+                document.getElementById(
+                    "batchName"
+                ).value.trim();
+
+
+            const dance =
+                document.getElementById(
+                    "batchDance"
+                ).value;
+
+
+            const level =
+                document.getElementById(
+                    "batchLevel"
+                ).value;
+
+
+            const instructor =
+                document.getElementById(
+                    "batchInstructor"
+                ).value;
+
+
+            const days =
+                document.getElementById(
+                    "batchDays"
+                ).value.trim();
+
+
+            const startTime =
+                document.getElementById(
+                    "startTime"
+                ).value;
+
+
+            const endTime =
+                document.getElementById(
+                    "endTime"
+                ).value;
+
+
+            const room =
+                document.getElementById(
+                    "batchRoom"
+                ).value.trim();
+
+
+            const capacity =
+                Number(
+                    document.getElementById(
+                        "batchCapacity"
+                    ).value
+                );
+
+
+            const status =
+                document.getElementById(
+                    "batchStatus"
+                ).value;
+
+
+            /* VALIDATION */
+
+            if (!name) {
+
+                alert(
+                    "Please enter batch name."
+                );
+
+                return;
+
+            }
+
+
+            if (!VALID_DANCES.includes(dance)) {
+
+                alert(
+                    "Please select a valid dance type."
+                );
+
+                return;
+
+            }
+
+
+            if (!level) {
+
+                alert(
+                    "Please select a level."
+                );
+
+                return;
+
+            }
+
+
+            if (!instructor) {
+
+                alert(
+                    "Please select an instructor."
+                );
+
+                return;
+
+            }
+
+
+            if (!days) {
+
+                alert(
+                    "Please enter class days."
+                );
+
+                return;
+
+            }
+
+
+            if (!startTime || !endTime) {
+
+                alert(
+                    "Please select start and end time."
+                );
+
+                return;
+
+            }
+
+
+            if (endTime <= startTime) {
+
+                alert(
+                    "End time must be after start time."
+                );
+
+                return;
+
+            }
+
+
+            if (!capacity || capacity < 1) {
+
+                alert(
+                    "Capacity must be at least 1."
+                );
+
+                return;
+
+            }
+
+
+            const batchData = {
+
+                id:
+                    id ||
+                    generateBatchId(),
+
+                name:
+                    name,
+
+                dance:
+                    dance,
+
+                level:
+                    level,
+
+                instructor:
+                    instructor,
+
+                days:
+                    days,
+
+                startTime:
+                    startTime,
+
+                endTime:
+                    endTime,
+
+                room:
+                    room,
+
+                capacity:
+                    capacity,
+
+                status:
+                    status
+
+            };
+
+
+            /* EDIT */
+
+            if (id) {
+
+                const index =
+                    batches.findIndex(
+                        batch =>
+                            batch.id === id
+                    );
+
+
+                if (index === -1) {
+
+                    alert(
+                        "Batch could not be found."
+                    );
+
+                    return;
+
+                }
+
+
+                batches[index] =
+                    batchData;
+
+            }
+
+
+            /* ADD */
+
+            else {
+
+                batches.push(
+                    batchData
+                );
+
+            }
+
+
+            saveBatches(
+                batches
+            );
+
+
+            closeBatchModal();
+
+            renderBatches();
+
+
+            alert(
+                id
+                    ? "Batch updated successfully."
+                    : "Batch added successfully."
+            );
+
+        }
+    );
+
+
+/* ==================================================
+   LOGOUT
+   ================================================== */
+
+function logoutUser() {
+
+    logout();
+
+    window.location.href =
+        "admin-login.html";
+
+}
+
+
+/* ==================================================
+   INITIALIZE
+   ================================================== */
+
+function initializeBatchesPage() {
+
+    loadDanceTypes();
+
+    loadInstructors();
+
+    renderBatches();
+
+
+    const currentUser =
+        getCurrentUser();
+
+
+    if (
+        currentUser &&
+        document.getElementById(
+            "adminName"
+        )
+    ) {
+
+        document.getElementById(
+            "adminName"
+        ).textContent =
+            currentUser.name ||
+            "Admin";
+
+    }
+
+}
+
+
+initializeBatchesPage();
+
+</script>
+
+</body>
+
+</html>
